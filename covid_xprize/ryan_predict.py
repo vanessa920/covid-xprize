@@ -17,7 +17,7 @@ def run_model(start_date: str,
     # Main source for the training data
     DATA_URL = 'https://raw.githubusercontent.com/OxCGRT/covid-policy-tracker/master/data/OxCGRT_latest.csv'
     # Local files
-    data_path = 'examples/predictors/ryan_predictor/data'
+    data_path = 'covid_xprize/examples/predictors/ryan_predictor/data'
     DATA_FILE = data_path + '/OxCGRT_latest.csv'
 
     if not os.path.exists(data_path):
@@ -168,16 +168,11 @@ def run_model(start_date: str,
     geoid_cases = geoid_cases.merge(og_df[['GeoID','CountryName']], how='left', left_on='GeoID', right_on='GeoID')
     geoid_cases = geoid_cases.groupby('CountryName').agg({'ConfirmedCases':np.sum}).reset_index()
 
-    scores_df = scores_df.merge(geoid_cases, how='left', left_on='Country', right_on='CountryName').drop(['CountryName'], axis=1)
+#     scores_df = scores_df.merge(geoid_cases, how='left', left_on='Country', right_on='CountryName').drop(['CountryName'], axis=1)
 
-    scores_df['TrainMPE'] = 100*scores_df['TrainMAE']/scores_df['ConfirmedCases']
-    scores_df['TestMPE'] = 100*scores_df['TestMAE']/scores_df['ConfirmedCases']
+#     scores_df['TrainMPE'] = 100*scores_df['TrainMAE']/scores_df['ConfirmedCases']
+#     scores_df['TestMPE'] = 100*scores_df['TestMAE']/scores_df['ConfirmedCases']
 
-    scores_df.sort_values(by='TestMPE').reset_index().to_csv('case_pred_errors_as_percent.csv', index=False)
+#     scores_df.sort_values(by='TestMPE').reset_index().to_csv('case_pred_errors_as_percent.csv', index=False)
 
-    scores_df = scores_df.sort_values(by='TestMPE').reset_index()
-
-    lin_no_scale = pd.read_csv('lin_vs_rand_forest.csv')
-
-    lin_no_scale[['Country','TrainMAE_x','TestMAE_x','ConfirmedCases']].merge(
-        scores_df, how='left', left_on='Country', right_on='Country').to_csv('lin_noscale_v_scale.csv')
+#     scores_df = scores_df.sort_values(by='TestMPE').reset_index()

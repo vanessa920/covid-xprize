@@ -1,4 +1,9 @@
 # Copyright 2020 (c) Cognizant Digital Business, Evolutionary AI. All rights reserved. Issued under the Apache 2.0 License.
+"""
+sample file call from bash:
+python predict.py --start_date 12-01-2020 --end_date 12-05-2020 --interventions_plan None --output_file predictions.csv
+"""
+
 
 import argparse
 
@@ -19,8 +24,8 @@ def predict(start_date: str,
     with columns "CountryName,RegionName,Date,PredictedDailyNewCases"
     """
     from covid_xprize.ryan_predict import run_model
-    run_model(start_date: str, end_date: str, path_to_ips_file: str, output_file_path)
-    
+    print(start_date,end_date,path_to_ips_file,output_file_path)
+    run_model(start_date,end_date,path_to_ips_file,output_file_path)
 
 
 # !!! PLEASE DO NOT EDIT. THIS IS THE OFFICIAL COMPETITION API !!!
