@@ -18,8 +18,9 @@ def predict(start_date: str,
     :return: Nothing. Saves the generated predictions to an output_file_path CSV file
     with columns "CountryName,RegionName,Date,PredictedDailyNewCases"
     """
-    # !!! YOUR CODE HERE !!!
-    raise NotImplementedError
+    from covid_xprize.ryan_predict import run_model
+    run_model(start_date: str, end_date: str, path_to_ips_file: str, output_file_path)
+    
 
 
 # !!! PLEASE DO NOT EDIT. THIS IS THE OFFICIAL COMPETITION API !!!
