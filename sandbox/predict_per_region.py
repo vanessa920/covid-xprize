@@ -101,8 +101,10 @@ def predict_df(start_date_str: str, end_date_str: str, path_to_ips_file: str, ve
     # Add new cases column
     hist_cases_df['NewCases'] = hist_cases_df.groupby('GeoID').ConfirmedCases.diff().fillna(0)
     # Fill any missing case values by interpolation and setting NaNs to 0
-    hist_cases_df.update(hist_cases_df.groupby('GeoID').NewCases.apply(
-        lambda group: group.interpolate()).fillna(0))
+#     hist_cases_df.update(hist_cases_df.groupby('GeoID').NewCases.apply(
+#         lambda group: group.interpolate()).fillna(0))
+    hist_cases_df.fillna(value=0, inplace=True)
+
     # Keep only the id and cases columns
     hist_cases_df = hist_cases_df[ID_COLS + CASES_COL]
     bad_data = ["Turkey__nan", "Uruguay__nan", "Belize__nan", "Denmark__nan", "Estonia__nan", "Lithuania__nan", "Panama__nan", "Cyprus__nan", "Latvia__nan", "Malaysia__nan"]
@@ -111,14 +113,14 @@ def predict_df(start_date_str: str, end_date_str: str, path_to_ips_file: str, ve
     for g in ips_df.GeoID.unique():
         if verbose:
             print('\nPredicting for', g)
-            
+
         # Load model
         modelname = g + '_model.pkl'
         modelname = os.path.join(ROOT_DIR, 'region_models', modelname)
-        
+
         scalername = g + '_scaler.pkl'
         scalername = os.path.join(ROOT_DIR, 'region_models', scalername)
-        
+
         if g in bad_data:
             with open(MODEL_FILE, "rb") as model_file:
                 model = pickle.load(model_file)
@@ -151,12 +153,12 @@ def predict_df(start_date_str: str, end_date_str: str, path_to_ips_file: str, ve
                                 X_npis.flatten()])
 
             # Make the prediction (reshape so that sklearn is happy)
-            
+
             if scaler:
                 scaled_data = scaler.transform(X.reshape(1, -1))
             else:
                 scaled_data = X
-                
+
             if g != "Bermuda__nan":
                 pred = model.predict(scaled_data.reshape(1, -1))[0]
                 pred = max(0, pred)  # Do not allow predicting negative cases
