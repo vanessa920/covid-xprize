@@ -9,8 +9,8 @@
 + export TZ=:America/Los_Angeles\
 + TZ=:America/Los_Angeles\
 ++ date\
-+ echo 'Running bootstrap at Wed Dec 23 04:22:27 America 2020'\
-Running bootstrap at Wed Dec 23 04:22:27 America 2020\
++ echo 'Running bootstrap at Wed Dec 23 06:55:55 America 2020'\
+Running bootstrap at Wed Dec 23 06:55:55 America 2020\
 + repo_name=covid-xprize-robotasks\
 + branch=main\
 + repo_dir=/home/xprize/covid-xprize-robotasks-main\
@@ -44,12 +44,12 @@ pip 20.3.3 from /opt/conda/lib/python3.7/site-packages/pip (python 3.7)\
 + pip install pandas==1.1.4\
 Requirement already satisfied: pandas==1.1.4 in /opt/conda/lib/python3.7/site-packages (1.1.4)\
 Requirement already satisfied: numpy>=1.15.4 in /opt/conda/lib/python3.7/site-packages (from pandas==1.1.4) (1.19.4)\
-Requirement already satisfied: pytz>=2017.2 in /opt/conda/lib/python3.7/site-packages (from pandas==1.1.4) (2020.4)\
 Requirement already satisfied: python-dateutil>=2.7.3 in /opt/conda/lib/python3.7/site-packages (from pandas==1.1.4) (2.8.1)\
+Requirement already satisfied: pytz>=2017.2 in /opt/conda/lib/python3.7/site-packages (from pandas==1.1.4) (2020.4)\
 Requirement already satisfied: six>=1.5 in /opt/conda/lib/python3.7/site-packages (from python-dateutil>=2.7.3->pandas==1.1.4) (1.14.0)\
 + python /home/xprize/covid-xprize-robotasks-main/judging/generate_predictions_local.py --requested-predictions-file /home/xprize/covid-xprize-robotasks-main/tasks/tasks.csv --prediction-module /home/xprize/work/predict.py\
-2020-12-23 04:22:33 robojudge            INFO     Generating predictions from file /home/xprize/covid-xprize-robotasks-main/tasks/tasks.csv\
-2020-12-23 04:22:33 robojudge            INFO     Running predict module /home/xprize/work/predict.py for 2020-12-22 to 2021-06-19 ip file ~/covid-xprize-robotasks-main/ips/live/20201222_080002_20201222_20210619_ips.csv output ~/work/predictions/20201222_080002_robojudge_live.csv\
+2020-12-23 06:56:00 robojudge            INFO     Generating predictions from file /home/xprize/covid-xprize-robotasks-main/tasks/tasks.csv\
+2020-12-23 06:56:00 robojudge            INFO     Running predict module /home/xprize/work/predict.py for 2020-12-22 to 2021-06-19 ip file ~/covid-xprize-robotasks-main/ips/live/20201222_080002_20201222_20210619_ips.csv output ~/work/predictions/20201222_080002_robojudge_live.csv\
 Generating predictions from 2020-12-22 to 2021-06-19...\
 Saved predictions to ~/work/predictions/20201222_080002_robojudge_live.csv\
 Done!\

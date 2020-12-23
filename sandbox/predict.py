@@ -27,7 +27,7 @@ def predict(start_date: str,
 #     predict_fixed.predict(start_date, end_date, path_to_ips_file, output_file_path)
     import predict_per_region
     predict_per_region.predict(start_date, end_date, path_to_ips_file, output_file_path)
-       
+
 
 # !!! PLEASE DO NOT EDIT. THIS IS THE OFFICIAL COMPETITION API !!!
 if __name__ == '__main__':
