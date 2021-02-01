@@ -1,12 +1,12 @@
 # Copyright 2020 (c) Cognizant Digital Business, Evolutionary AI. All rights reserved. Issued under the Apache 2.0 License.
 
-*.DS_Store
+.DS_Store
 venv/
 .ipynb_checkpoints/
 __pycache__
 *.pyc
 .idea/
-**/.DS_Store
+
 
 predictions/
 prescriptions/
