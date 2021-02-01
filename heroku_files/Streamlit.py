@@ -9,82 +9,19 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import pickle
 
-#preprocessing
-import spacy
-import re
-import string
+# #preprocessing
+# import spacy
+# import re
+# import string
 
 
 #intro
 # st.sidebar.write("This is an application for predicting COVID cases around the country!")
 # st.sidebar.button("Predict")
 
+from HTML_snippets import Title_html
 
-Title_html = """
-    <style>
-        .title h1{
-          user-select: none;
-          font-size: 43px;
-          color: white;
-          background: repeating-linear-gradient(-45deg, red 0%, yellow 7.14%, rgb(0,255,0) 14.28%, rgb(0,255,255) 21.4%, cyan 28.56%, blue 35.7%, magenta 42.84%, red 50%);
-          background-size: 600vw 600vw;
-          -webkit-text-fill-color: transparent;
-          -webkit-background-clip: text;
-          animation: slide 10s linear infinite forwards;
-        }
-        @keyframes slide {
-          0%{
-            background-position-x: 0%;
-          }
-          100%{
-            background-position-x: 600vw;
-          }
-        }
-        .reportview-container .main .block-container{
-            padding-top: 3em;
-        }
-        body {
-            background-color: white;
-            background-position-y: -200px;
-        }
-        @media (max-width: 1800px) {
-            body {
-                background-position-x: -500px;
-            }
-        }
-        .Widget.stTextArea, .Widget.stTextArea textarea {
-        height: 586px;
-        width: 400px;
-        }
-        h1{
-            color: black
-        }
-        h2{
-            color: black
-        }
-        p{
-            color: black
-        }
-        .sidebar-content {
-            width:25rem !important;
-        }
-        .Widget.stTextArea, .Widget.stTextArea textarea{
-        }
-        .sidebar.--collapsed .sidebar-content {
-         margin-left: -25rem;
-        }
-        .streamlit-button.small-button {
-        padding: .5rem 9.8rem;
-        }
-        .streamlit-button.primary-button {
-        background-color: white;
-        }
-    </style> 
-    
-    <div>
-        <h1>Welcome to the COVID Prediction App!</h1>
-    </div>
-    """
+
 st.markdown(Title_html, unsafe_allow_html=True) #Title rendering
 
 #Source: https://www.analyticsvidhya.com/blog/2020/10/create-interactive-dashboards-with-streamlit-and-python/
@@ -125,24 +62,36 @@ country_data = df[df['CountryName'] == select]
 #     dataset.iloc[0]['deaths'],dataset.iloc[0]['active'])})
 #     return total_dataframe
 
-def get_total_dataframe(dataset):
-    total_dataframe = pd.DataFrame({
-    'Date':['Predicted Daily New Cases'],
-    # 'Date':(dataset.iloc[0]['Date']),
-    'Number of cases':(dataset.iloc[0]['PredictedDailyNewCases'])
-    })
-    return total_dataframe
+# def get_total_dataframe(dataset):
+#     total_dataframe = pd.DataFrame({
+#     'Date':['Predicted Daily New Cases'],
+#     # 'Date':(dataset.iloc[0]['Date']),
+#     'Number of cases':(dataset.iloc[0]['PredictedDailyNewCases'])
+#     })
+#     return total_dataframe
 
-country_total = get_total_dataframe(country_data)
+# country_total = get_total_dataframe(country_data)
 
 if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
     st.markdown("## **Country level analysis**")
     st.markdown("### Overall Predicted Daily New Cases in %s " % (select))
     if not st.checkbox('Hide Graph', False, key=1):
-        country_total_graph = px.scatter(
-        country_total, 
-        x='Date',
-        y='Number of cases',
-        labels={'Number of cases':'Number of cases in %s' % (select)},
-        color='Date')
+        country_total_graph = px.line(
+            country_data,
+            x='Date',
+            y='PredictedDailyNewCases',
+            labels={
+                'PredictedDailyNewCases':'<b>Number of Cases (per 100k?)</b>',
+                'Date':'<b>Date</b>'
+            },
+            title=f'<b>Overall Predicted Daily New Cases in {select}</b>')
+            #color='Date')
+        country_total_graph.update_layout(
+            xaxis_tickformat="%b %d %Y",
+            xaxis_nticks=len(list(country_data['Date'])),
+            yaxis_range = [0,max(list(country_data['PredictedDailyNewCases']))]
+        )
+#         country_total_graph.update_xaxes(tickformat="%b %d %Y", nticks=len(list(country_data['Date'])))
+        country_total_graph.update_yaxes(tick0 = 0)
         st.plotly_chart(country_total_graph)
+        #st.write(country_data)
