@@ -1,12 +1,12 @@
 # Copyright 2020 (c) Cognizant Digital Business, Evolutionary AI. All rights reserved. Issued under the Apache 2.0 License.
 
-*.DS_Store
+.DS_Store
 venv/
 .ipynb_checkpoints/
 __pycache__
 *.pyc
 .idea/
-**/.DS_Store
+
 
 predictions/
 prescriptions/
@@ -22,10 +22,8 @@ covid_xprize/examples/predictors/lstm/predictions/
 covid_xprize/examples/predictors/lstm/tests/fixtures/OxCGRT_latest.csv
 
 *prescription_*.csv
-*tmp_predictions_for_prescriptions/
+**/neat-checkpoint-*
 covid_xprize/examples/prescriptors/neat/data/
-covid_xprize/examples/prescriptors/neat/neat-checkpoint-*
-covid_xprize/examples/prescriptors/neat/tmp_prescription.csv
 covid_xprize/examples/prescriptors/neat/prescriptions/
 covid_xprize/examples/prescriptors/random/prescriptions/
 covid_xprize/examples/prescriptors/zero/prescriptions/
