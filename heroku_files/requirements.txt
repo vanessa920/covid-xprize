@@ -1,0 +1,10 @@
+pandas==1.1.0
+numpy==1.19.1
+Pillow==7.2.0
+scikit_learn==0.23.2
+streamlit==0.68.0
+matplotlib==3.2.2
+spacy==2.3.2
+regex==2020.10.11
+wordcloud==1.8.0
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz#egg=en_core_web_sm
