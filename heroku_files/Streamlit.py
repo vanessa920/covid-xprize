@@ -5,6 +5,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
+import datetime
 
 from PIL import Image
 import pickle
@@ -74,7 +75,6 @@ country_data = df[df['CountryName'] == select]
 
 if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
     st.markdown("## **Country level analysis**")
-    st.markdown("### Overall Predicted Daily New Cases in %s " % (select))
     if not st.checkbox('Hide Graph', False, key=1):
         country_total_graph = px.line(
             country_data,
@@ -95,3 +95,68 @@ if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
         country_total_graph.update_yaxes(tick0 = 0)
         st.plotly_chart(country_total_graph)
         #st.write(country_data)
+
+        stringency = st.slider('Select the level of stringency for NPIs', 0, 9)
+        prescribe_df = pd.read_csv('all_2021q1_test_task.csv')
+        prescribe_df = prescribe_df[prescribe_df['CountryName'] == select] #select the country
+        prescribe_df = prescribe_df[pd.to_datetime(prescribe_df['Date']) >= datetime.datetime.today()] #select today and future dates
+        prescribe_df = prescribe_df[prescribe_df['PrescriptionIndex'] == stringency] #select the relevant prescription index
+        st.write(prescribe_df)
+
+        ## This should have 3 colors and a legend showing the colors as 1,2,3 for the severity, maybe one of those "wildfire risk" semicircles with the needle
+        # prescriptions = go.Figure(go.Waterfall(
+        #     name = "2018", orientation = "h",
+            
+        #     measure = ["relative", "relative", "relative", "relative", "total", "relative",
+        #             "relative", "relative", "relative", "total", "relative",
+        #             "relative", "total", "relative", "total"],
+        #     y = ["Sales", "Consulting", "Maintenance", "Other revenue",
+        #         "Net revenue", "Purchases", "Material expenses",
+        #         "Personnel expenses", "Other expenses", "Operating profit",
+        #         "Investment income", "Financial income",
+        #         "Profit before tax", "Income tax (15%)", "Profit after tax"],
+        #     x = [375, 128, 78, 27, None, -327, -12, -78, -12, None, 32, 89, None, -45, None],
+        #     connector = {"mode":"between", "line":{"width":4, "color":"rgb(0, 0, 0)", "dash":"solid"}}
+        # ))
+        # prescriptions.update_layout(title = "Suggested Intervention Measures")
+        # st.plotly_chart(prescriptions)
+
+        #heatmap version
+
+        # all_npis = ['C1_School closing', 'C2_Workplace closing', 'C3_Cancel public events', 'C4_Restrictions on gatherings',
+        # 'C5_Close public transport', 'C6_Stay at home requirements', 'C7_Restrictions on internal movement',
+        # 'C8_International travel controls', 'H1_Public information campaigns', 'H2_Testing policy',
+        # 'H3_Contact tracing', 'H6_Facial Coverings', 'Date', 'CountryName', 'RegionName', 'PrescriptionIndex']
+
+        npis = ['H6_Facial Coverings', 'H3_Contact tracing', 'H2_Testing policy',
+        'H1_Public information campaigns', 'C8_International travel controls',
+        'C7_Restrictions on internal movement', 'C6_Stay at home requirements',
+        'C5_Close public transport', 'C4_Restrictions on gatherings', 'C3_Cancel public events',
+        'C2_Workplace closing', 'C1_School closing']
+
+        first_date = datetime.datetime.today()
+        last_date = pd.to_datetime(prescribe_df['Date'].values[-1])
+        prescribe_df = np.transpose(np.array(prescribe_df.drop(axis=1, columns=['Date', 'CountryName', 'RegionName', 'PrescriptionIndex'])))
+        print(prescribe_df)
+
+        np.random.seed(1)
+        dates = [first_date + datetime.timedelta(days=x) for x in range((last_date-first_date).days + 1)]
+        z = np.random.poisson(size=(len(npis), len(dates)))
+        fig = go.Figure(data=go.Heatmap(
+                z=prescribe_df,
+                x=dates,
+                y=npis,
+                #colorscale='Viridis')
+                colorscale=[#this isn't working properly and scales continuously if not all npi values are present (i.e. 4 is missing)
+                        [0,"white"],
+                        [0.25,"blue"],
+                        [0.5,'#00cc00'],#can also use rgb(0,255,0)
+                        [0.75,"yellow"],
+                        [1,"red"]
+                ]
+        ))
+        fig.update_layout(
+            title='Recommended Intervention Plan',
+            xaxis_nticks=36)
+        st.plotly_chart(fig)
+
