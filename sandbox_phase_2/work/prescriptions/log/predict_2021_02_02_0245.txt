@@ -1,0 +1,344 @@
+Running prescriptions generator bootstrap...
++ mode=prescriptions
++ export TZ=:America/Los_Angeles
++ TZ=:America/Los_Angeles
+++ date
++ echo 'Running bootstrap at Tue Feb  2 02:45:54 America 2021'
+Running bootstrap at Tue Feb  2 02:45:54 America 2021
++ repo_name=covid-xprize-robotasks
++ branch=main
++ repo_dir=/home/xprize/covid-xprize-robotasks-main
++ rm -rf /home/xprize/covid-xprize-robotasks-main
++ archive_file=/home/xprize/covid-xprize-robotasks.tar.gz
++ wget --quiet --output-document /home/xprize/covid-xprize-robotasks.tar.gz https://github.com/leaf-ai/covid-xprize-robotasks/archive/main.tar.gz
++ mkdir -p /home/xprize/covid-xprize-robotasks-main
++ tar --overwrite --extract --directory /home/xprize --file /home/xprize/covid-xprize-robotasks.tar.gz
++ rm /home/xprize/covid-xprize-robotasks.tar.gz
++ '[' prescriptions = predictions ']'
++ '[' prescriptions = prescriptions ']'
++ main_script=/home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.sh
++ chmod +x /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.sh
++ /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.sh /home/xprize/covid-xprize-robotasks-main
++ echo 'Running main script...'
+Running main script...
++ repo_dir=/home/xprize/covid-xprize-robotasks-main
++ prescriptions_file=/home/xprize/covid-xprize-robotasks-main/tasks/prescribe_tasks.csv
++ generate_prescriptions_wrapper=/home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.py
++ prescription_module=/home/xprize/work/prescribe.py
++ validation_module=/home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
++ pwd
+/home/xprize
++ command -v python
+/opt/conda/bin/python
++ command -v pip
+/opt/conda/bin/pip
++ python --version
+Python 3.7.3
++ pip --version
+pip 20.3.3 from /opt/conda/lib/python3.7/site-packages/pip (python 3.7)
++ set +o errexit
++ flock --nonblock /tmp/robojudge.lock python /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.py --requested-prescriptions-file /home/xprize/covid-xprize-robotasks-main/tasks/prescribe_tasks.csv --prescription-module /home/xprize/work/prescribe.py --validation-module /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
+2021-02-02 02:46:00 robojudge            INFO     Generating prescriptions from file /home/xprize/covid-xprize-robotasks-main/tasks/prescribe_tasks.csv
+2021-02-02 02:46:00 robojudge            INFO     Running prescribe module /home/xprize/work/prescribe.py
+2021-02-02 02:46:00 robojudge            INFO     Start date: 2021-02-15
+2021-02-02 02:46:00 robojudge            INFO     End date: 2021-05-15
+2021-02-02 02:46:00 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/uk_future_test_ips.csv
+2021-02-02 02:46:00 robojudge            INFO     Cost file: ~/covid-xprize-robotasks-main/ip_costs/fixed_equal_costs.csv
+2021-02-02 02:46:00 robojudge            INFO     Output file: ~/work/prescriptions/uk_future_test_task.csv
+2021-02-02 02:46:00.797854: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2021-02-02 02:46:00.803001: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2021-02-02 02:46:02.483158: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-02-02 02:46:02.489058: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2021-02-02 02:46:02.493102: W tensorflow/stream_executor/cuda/cuda_driver.cc:326] failed call to cuInit: UNKNOWN ERROR (303)
+2021-02-02 02:46:02.497006: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (wk-caas-a11666a7a46a4d0e84c3a5a63ae1cdb5-16871ed1712258eebecd22): /proc/driver/nvidia/version does not exist
+2021-02-02 02:46:02.501415: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX512F
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-02-02 02:46:02.501748: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-02-02 02:46:44.800490: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-02-02 02:46:44.800892: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2095074999 Hz
+Generating prescriptions from 2021-02-15 to 2021-05-15...
+prescribing for United Kingdom
+tracing...
+tracing...
+prescribing for United Kingdom / England
+prescribing for United Kingdom / Northern Ireland
+prescribing for United Kingdom / Scotland
+prescribing for United Kingdom / Wales
+Done!
+2021-02-02 02:51:08 robojudge            INFO     Running validation module /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
+2021-02-02 02:51:08 robojudge            INFO     Start date: 2021-02-15
+2021-02-02 02:51:08 robojudge            INFO     End date: 2021-05-15
+2021-02-02 02:51:08 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/uk_future_test_ips.csv
+2021-02-02 02:51:08 robojudge            INFO     Output file: ~/work/prescriptions/uk_future_test_task.csv
+2021-02-02 02:51:08 prescriptor_validation INFO     Validating submission file ~/work/prescriptions/uk_future_test_task.csv start date 2021-02-15 end date 2021-05-15 intervention plan ~/covid-xprize-robotasks-main/ips/prescriptions/uk_future_test_ips.csv
+2021-02-02 02:51:08 numexpr.utils        INFO     NumExpr defaulting to 4 threads.
+2021-02-02 02:51:08 prescriptor_validation INFO     ~/work/prescriptions/uk_future_test_task.csv submission passes validation
+2021-02-02 02:51:08 prescriptor_validation INFO     Done!
+2021-02-02 02:51:09 robojudge            INFO     Running prescribe module /home/xprize/work/prescribe.py
+2021-02-02 02:51:09 robojudge            INFO     Start date: 2021-01-01
+2021-02-02 02:51:09 robojudge            INFO     End date: 2021-03-31
+2021-02-02 02:51:09 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/all_2020_ips.csv
+2021-02-02 02:51:09 robojudge            INFO     Cost file: ~/covid-xprize-robotasks-main/ip_costs/uniform_random_costs.csv
+2021-02-02 02:51:09 robojudge            INFO     Output file: ~/work/prescriptions/all_2021q1_test_task.csv
+2021-02-02 02:51:09.682511: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2021-02-02 02:51:09.682531: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2021-02-02 02:51:11.257652: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-02-02 02:51:11.257904: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2021-02-02 02:51:11.257920: W tensorflow/stream_executor/cuda/cuda_driver.cc:326] failed call to cuInit: UNKNOWN ERROR (303)
+2021-02-02 02:51:11.257957: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (wk-caas-a11666a7a46a4d0e84c3a5a63ae1cdb5-16871ed1712258eebecd22): /proc/driver/nvidia/version does not exist
+2021-02-02 02:51:11.258280: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX512F
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-02-02 02:51:11.259147: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-02-02 02:54:28.308908: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-02-02 02:54:29.544578: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2095074999 Hz
+Generating prescriptions from 2021-01-01 to 2021-03-31...
+prescribing for Aruba
+tracing...
+tracing...
+prescribing for Afghanistan
+prescribing for Angola
+prescribing for Albania
+prescribing for Andorra
+prescribing for United Arab Emirates
+prescribing for Argentina
+prescribing for Australia
+prescribing for Austria
+prescribing for Azerbaijan
+prescribing for Burundi
+prescribing for Belgium
+prescribing for Benin
+prescribing for Burkina Faso
+prescribing for Bangladesh
+prescribing for Bulgaria
+prescribing for Bahrain
+prescribing for Bahamas
+prescribing for Bosnia and Herzegovina
+prescribing for Belarus
+prescribing for Belize
+prescribing for Bermuda
+prescribing for Bolivia
+prescribing for Brazil
+prescribing for Barbados
+prescribing for Brunei
+prescribing for Bhutan
+prescribing for Botswana
+prescribing for Central African Republic
+prescribing for Canada
+prescribing for Switzerland
+prescribing for Chile
+prescribing for China
+prescribing for Cote d'Ivoire
+prescribing for Cameroon
+prescribing for Democratic Republic of Congo
+prescribing for Congo
+prescribing for Colombia
+prescribing for Comoros
+prescribing for Cape Verde
+prescribing for Costa Rica
+prescribing for Cuba
+prescribing for Cyprus
+prescribing for Czech Republic
+prescribing for Germany
+prescribing for Djibouti
+prescribing for Dominica
+prescribing for Denmark
+prescribing for Dominican Republic
+prescribing for Algeria
+prescribing for Ecuador
+prescribing for Egypt
+prescribing for Eritrea
+prescribing for Spain
+prescribing for Estonia
+prescribing for Ethiopia
+prescribing for Finland
+prescribing for Fiji
+prescribing for France
+prescribing for Faeroe Islands
+prescribing for Gabon
+prescribing for United Kingdom
+prescribing for United Kingdom / England
+prescribing for United Kingdom / Northern Ireland
+prescribing for United Kingdom / Scotland
+prescribing for United Kingdom / Wales
+prescribing for Georgia
+prescribing for Ghana
+prescribing for Guinea
+prescribing for Gambia
+prescribing for Greece
+prescribing for Greenland
+prescribing for Guatemala
+prescribing for Guam
+prescribing for Guyana
+prescribing for Hong Kong
+prescribing for Honduras
+prescribing for Croatia
+prescribing for Haiti
+prescribing for Hungary
+prescribing for Indonesia
+prescribing for India
+prescribing for Ireland
+prescribing for Iran
+prescribing for Iraq
+prescribing for Iceland
+prescribing for Israel
+prescribing for Italy
+prescribing for Jamaica
+prescribing for Jordan
+prescribing for Japan
+prescribing for Kazakhstan
+prescribing for Kenya
+prescribing for Kyrgyz Republic
+prescribing for Cambodia
+prescribing for South Korea
+prescribing for Kuwait
+prescribing for Laos
+prescribing for Lebanon
+prescribing for Liberia
+prescribing for Libya
+prescribing for Sri Lanka
+prescribing for Lesotho
+prescribing for Lithuania
+prescribing for Luxembourg
+prescribing for Latvia
+prescribing for Macao
+prescribing for Morocco
+prescribing for Monaco
+prescribing for Moldova
+prescribing for Madagascar
+prescribing for Mexico
+prescribing for Mali
+prescribing for Myanmar
+prescribing for Mongolia
+prescribing for Mozambique
+prescribing for Mauritania
+prescribing for Mauritius
+prescribing for Malawi
+prescribing for Malaysia
+prescribing for Namibia
+prescribing for Niger
+prescribing for Nigeria
+prescribing for Nicaragua
+prescribing for Netherlands
+prescribing for Norway
+prescribing for Nepal
+prescribing for New Zealand
+prescribing for Oman
+prescribing for Pakistan
+prescribing for Panama
+prescribing for Peru
+prescribing for Philippines
+prescribing for Papua New Guinea
+prescribing for Poland
+prescribing for Puerto Rico
+prescribing for Portugal
+prescribing for Paraguay
+prescribing for Palestine
+prescribing for Qatar
+prescribing for Kosovo
+prescribing for Romania
+prescribing for Russia
+prescribing for Rwanda
+prescribing for Saudi Arabia
+prescribing for Sudan
+prescribing for Senegal
+prescribing for Singapore
+prescribing for Solomon Islands
+prescribing for Sierra Leone
+prescribing for El Salvador
+prescribing for San Marino
+prescribing for Somalia
+prescribing for Serbia
+prescribing for South Sudan
+prescribing for Suriname
+prescribing for Slovak Republic
+prescribing for Slovenia
+prescribing for Sweden
+prescribing for Eswatini
+prescribing for Seychelles
+prescribing for Syria
+prescribing for Chad
+prescribing for Togo
+prescribing for Thailand
+prescribing for Tajikistan
+prescribing for Timor-Leste
+prescribing for Trinidad and Tobago
+prescribing for Tunisia
+prescribing for Turkey
+prescribing for Taiwan
+prescribing for Tanzania
+prescribing for Uganda
+prescribing for Ukraine
+prescribing for Uruguay
+prescribing for United States
+prescribing for United States / Alaska
+prescribing for United States / Alabama
+prescribing for United States / Arkansas
+prescribing for United States / Arizona
+prescribing for United States / California
+prescribing for United States / Colorado
+prescribing for United States / Connecticut
+prescribing for United States / Washington DC
+prescribing for United States / Delaware
+prescribing for United States / Florida
+prescribing for United States / Georgia
+prescribing for United States / Hawaii
+prescribing for United States / Iowa
+prescribing for United States / Idaho
+prescribing for United States / Illinois
+prescribing for United States / Indiana
+prescribing for United States / Kansas
+prescribing for United States / Kentucky
+prescribing for United States / Louisiana
+prescribing for United States / Massachusetts
+prescribing for United States / Maryland
+prescribing for United States / Maine
+prescribing for United States / Michigan
+prescribing for United States / Minnesota
+prescribing for United States / Missouri
+prescribing for United States / Mississippi
+prescribing for United States / Montana
+prescribing for United States / North Carolina
+prescribing for United States / North Dakota
+prescribing for United States / Nebraska
+prescribing for United States / New Hampshire
+prescribing for United States / New Jersey
+prescribing for United States / New Mexico
+prescribing for United States / Nevada
+prescribing for United States / New York
+prescribing for United States / Ohio
+prescribing for United States / Oklahoma
+prescribing for United States / Oregon
+prescribing for United States / Pennsylvania
+prescribing for United States / Rhode Island
+prescribing for United States / South Carolina
+prescribing for United States / South Dakota
+prescribing for United States / Tennessee
+prescribing for United States / Texas
+prescribing for United States / Utah
+prescribing for United States / Virginia
+prescribing for United States / Vermont
+prescribing for United States / Washington
+prescribing for United States / Wisconsin
+prescribing for United States / West Virginia
+prescribing for United States / Wyoming
+prescribing for Uzbekistan
+prescribing for Venezuela
+prescribing for Vietnam
+prescribing for Vanuatu
+prescribing for Yemen
+prescribing for South Africa
+prescribing for Zambia
+prescribing for Zimbabwe
+Done!
+2021-02-02 03:37:17 robojudge            INFO     Running validation module /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
+2021-02-02 03:37:17 robojudge            INFO     Start date: 2021-01-01
+2021-02-02 03:37:17 robojudge            INFO     End date: 2021-03-31
+2021-02-02 03:37:17 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/all_2020_ips.csv
+2021-02-02 03:37:17 robojudge            INFO     Output file: ~/work/prescriptions/all_2021q1_test_task.csv
+2021-02-02 03:37:18 prescriptor_validation INFO     Validating submission file ~/work/prescriptions/all_2021q1_test_task.csv start date 2021-01-01 end date 2021-03-31 intervention plan ~/covid-xprize-robotasks-main/ips/prescriptions/all_2020_ips.csv
+2021-02-02 03:37:18 numexpr.utils        INFO     NumExpr defaulting to 4 threads.
+2021-02-02 03:37:23 prescriptor_validation INFO     ~/work/prescriptions/all_2021q1_test_task.csv submission passes validation
+2021-02-02 03:37:23 prescriptor_validation INFO     Done!
++ retVal=0
++ '[' 0 -ne 0 ']'
++ set -o errexit
