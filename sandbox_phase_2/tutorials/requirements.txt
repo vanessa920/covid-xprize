@@ -1,0 +1,11 @@
+wheel==0.34.2 
+setuptools==45.1.0 
+numexpr==2.7.1 
+numpy==1.19.4 
+pandas==1.1.4 
+Pillow==8.0.1
+protobuf==3.14.0
+matplotlib==3.3.3
+seaborn==0.10.1
+tensorflow==2.1.0 
+keras==2.4.2
