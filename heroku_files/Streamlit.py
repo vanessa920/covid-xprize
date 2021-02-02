@@ -137,7 +137,6 @@ if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
         first_date = datetime.datetime.today()
         last_date = pd.to_datetime(prescribe_df['Date'].values[-1])
         prescribe_df = np.transpose(np.array(prescribe_df.drop(axis=1, columns=['Date', 'CountryName', 'RegionName', 'PrescriptionIndex'])))
-        print(prescribe_df)
 
         np.random.seed(1)
         dates = [first_date + datetime.timedelta(days=x) for x in range((last_date-first_date).days + 1)]
@@ -146,7 +145,8 @@ if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
                 z=prescribe_df,
                 x=dates,
                 y=npis,
-                #colorscale='Viridis')
+                ygap=5,
+		#colorscale='Viridis')
                 colorscale=[#this isn't working properly and scales continuously if not all npi values are present (i.e. 4 is missing)
                         [0,"white"],
                         [0.25,"blue"],
@@ -156,7 +156,10 @@ if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
                 ]
         ))
         fig.update_layout(
-            title='Recommended Intervention Plan',
-            xaxis_nticks=36)
+        	title='Recommended Intervention Plan',
+	        xaxis_nticks=36,
+		paper_bgcolor='rgba(0,0,0,0)',
+            	plot_bgcolor='rgba(0,0,0,0)')
         st.plotly_chart(fig)
 
+## the ticks need to be updated so they're less frequent, or maybe even just the dates on the top with the month below for each group? there's a way to do it pretty easily in plotly
