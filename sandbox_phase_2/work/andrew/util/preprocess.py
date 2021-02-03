@@ -47,53 +47,46 @@ LSTM_SIZE = 32
 MAX_NB_COUNTRIES = 20
 NB_ACTION = 12
 
-# todo: handle the case where the given start date is in the future & there's a gap between our last data
-# would this impact the time needed to train? we'd have to roll out the predictions before starting
-# could also toss out all the data prior to NB_LOOKBACK_DAYS
-
 # also get previous case data
 def get_all_data(start_date, data_file_path, ips_path, weights_file_path, window_size=WINDOW_SIZE):
     data = {}
     df = prepare_dataframe(data_file_path)
     df = df[df.Date < start_date]
-
-
+    
     fill_starting = df.Date.max() + np.timedelta64(1, 'D')
-
+    
     ips_df = _load_original_data(ips_path)
-
+    
 
     required_geos = ips_df.GeoID.unique()
-
+    
     df=df[df.GeoID.isin(required_geos)]
-
+    
     xprize_predictor = XPrizePredictor(MODEL_WEIGHTS_FILE, df)
-
+    
     # should fill in data prior to last_known_date as well for countries with no data on 2021-01-11
-
+    # should do this at this point
+    
     fill_ending = pd.to_datetime(start_date) - np.timedelta64(1, 'D')
-
+    
     fill_df = xprize_predictor.predict(fill_starting, fill_ending, ips_df)
     add_geoid(fill_df)
     fill_df = do_calculations(fill_df, df)
-
+    
     fill_df = fill_df.merge(ips_df, how='left', on=['GeoID', 'Date'], suffixes=['', '_r'])
-
+    
     df = pd.concat([df, fill_df])
-
+    
     df = df.sort_values(by=['Date'])
     weights_df = prepare_weights_df(weights_file_path)
-
-    # start_date shouldn't matter here, but let's just be safe
-    initial_conditions = create_country_samples(df, weights_df, required_geos, start_date, window_size)
-
-    data["df"] = df
+    
+    initial_conditions, country_names = create_country_samples(df, weights_df, required_geos, start_date, window_size)
+    
     data["geos"] = required_geos
     data["input_tensors"] = initial_conditions
-
+    data["country_names"] = country_names
+    
     return data
-
-
 
 def add_geoid(df):
     df["GeoID"] = np.where(df["RegionName"].isnull(),
@@ -120,17 +113,6 @@ def get_input_tensor(init_cond):
     return [context_0, action_0, population, total_cases_0, prev_new_cases_0, npi_weights]
 
 
-# npi_weights is (NB_ACTION,)
-# def get_input_tensor(data, geo):
-#     init_cond = data['initial_conditions'][geo]
-#     context_0 = tf.convert_to_tensor(init_cond['context_0'], dtype='float32')[tf.newaxis, :, tf.newaxis]
-#     action_0 = tf.convert_to_tensor(init_cond['action_0'], dtype='float32')[tf.newaxis]
-#     population = tf.convert_to_tensor(init_cond['population'], dtype='float32')[tf.newaxis]
-#     total_cases_0 = tf.convert_to_tensor(init_cond['total_cases_0'], dtype='float32')[tf.newaxis]
-#     prev_new_cases_0 = tf.convert_to_tensor(init_cond['prev_new_cases'], dtype='float32')[tf.newaxis]
-#     npi_weights = tf.convert_to_tensor(init_cond['weights'], dtype='float32')[tf.newaxis]
-#     return [context_0, action_0, population, total_cases_0, prev_new_cases_0, npi_weights]
-
 def prepare_dataframe(data_url) -> pd.DataFrame:
     """
     Loads the Oxford dataset, cleans it up and prepares the necessary columns. Depending on options, also
@@ -143,7 +125,7 @@ def prepare_dataframe(data_url) -> pd.DataFrame:
 
     # Additional context df (e.g Population for each country)
     df2 = _load_additional_context_df()
-
+    
     # Merge the 2 DataFrames
     df = df1.merge(df2, on=['GeoID'], how='left', suffixes=('', '_y'))
 
@@ -174,6 +156,7 @@ def prepare_dataframe(data_url) -> pd.DataFrame:
     # Compute percent change in new cases and deaths each day
     df['CaseRatio'] = df.groupby('GeoID').SmoothNewCases.pct_change(
     ).fillna(0).replace(np.inf, 0) + 1
+    
     df['DeathRatio'] = df.groupby('GeoID').SmoothNewDeaths.pct_change(
     ).fillna(0).replace(np.inf, 0) + 1
 
@@ -182,8 +165,8 @@ def prepare_dataframe(data_url) -> pd.DataFrame:
 
     # Create column of value to predict
     df['PredictionRatio'] = df['CaseRatio'] / (1 - df['ProportionInfected'])
-
-
+    
+    
     return df
 
 def do_calculations(fill_df, hist_df):
@@ -194,7 +177,7 @@ def do_calculations(fill_df, hist_df):
     new_fill_df = new_fill_df.rename(columns={"PredictedDailyNewCases": "NewCases"})
     new_fill_df['NewCases'] = new_fill_df['NewCases'].clip(lower=0)
     required_geos = new_fill_df.GeoID.unique()
-
+  
     new_fill_df["ConfirmedSinceLastKnown"] = new_fill_df.groupby("GeoID")["NewCases"].cumsum()
     new_fill_df["LastKnown"] = 0
 
@@ -203,26 +186,17 @@ def do_calculations(fill_df, hist_df):
         # cases for the last day on record
         last_confirmed_cases = previous_data["ConfirmedCases"].iloc[-1]
         new_fill_df.loc[new_fill_df.GeoID == g, ["LastKnown"]] = last_confirmed_cases
-        #new_fill_df["ConfirmedSinceLastKnown"] = new_fill_df["NewCases"].cumsum()
-        #new_fill_df["ConfirmedCases"] = last_confirmed_cases + new_fill_df["ConfirmedSinceLastKnown"]
-        #print(fill_df)
-        #new_fill_df["ConfirmedCases"] =
+
     new_fill_df["ConfirmedCases"] = new_fill_df["ConfirmedSinceLastKnown"] + new_fill_df["LastKnown"]
-
-    #new_fill_df['SmoothNewCases'] = new_fill_df.groupby('GeoID')['NewCases'].rolling(
-    #    WINDOW_SIZE, min_periods=1,center=False).mean().fillna(0).reset_index(0, drop=True)
-
-    #new_fill_df['CaseRatio'] = new_fill_df.groupby('GeoID').SmoothNewCases.pct_change(
-    #).fillna(0).replace(np.inf, 0) + 1
-
+    
     # Add column for proportion of population infected
     new_fill_df['ProportionInfected'] = new_fill_df['ConfirmedCases'] / new_fill_df['Population']
 
     # Create column of value to predict
-
+    
     return new_fill_df
-        #future_data = fill_df[fill_df.GeoID == g]
-
+        #future_data = fill_df[fill_df.GeoID == g]    
+    
 def _load_original_data(data_url):
     latest_df = pd.read_csv(data_url,
                             parse_dates=['Date'],
@@ -230,18 +204,9 @@ def _load_original_data(data_url):
                             dtype={"RegionName": str,
                                    "RegionCode": str},
                             error_bad_lines=False)
-    #print(latest_df.loc[latest_df.CountryName == "United States Virgin Islands"])
-    #print("hello")
-    #print(latest_df.loc[latest_df.CountryName == "United States Virgin Islands"].iloc[370])
-    #print(latest_df.loc[latest_df.RegionName == "Virgin Islands"].iloc[370])
-    #latest_df.loc[latest_df.CountryName == "United States Virgin Islands", ["CountryName", "RegionName"]] = ["United States", "Virgin Islands"]
-    # GeoID is CountryName / RegionName
-    # np.where usage: if A then B else C
-#     latest_df["GeoID"] = np.where(latest_df["RegionName"].isnull(),
-#                                   latest_df["CountryName"],
-#                                   latest_df["CountryName"] + ' / ' + latest_df["RegionName"])
-    add_geoid(latest_df)
 
+    add_geoid(latest_df)
+    
     return latest_df
 
 def _fill_missing_values(df):
@@ -302,29 +267,32 @@ def create_country_samples(df, weights_df, geos, start_date, window_size) -> dic
     action_columns = NPI_COLUMNS
     outcome_column = 'PredictionRatio'
     country_samples = {}
-
+    country_names = {}
+    
     df = df[df.Date < start_date]
     for g in geos:
         cdf = df[df.GeoID == g]
         cdf = cdf[cdf.ConfirmedCases.notnull()]
-
+    
         if len(cdf) == 0:
             print(g)
             continue
-
+        
         geo_weights = weights_df[weights_df.GeoID == g]
-
+        
         if len(geo_weights) != 0:
             weights = geo_weights.iloc[0][NPI_COLUMNS].to_numpy()
+            weights[weights==0] += 0.001 # so we don't divide by zero later
+            
         else:
             weights = np.array([1.0 for i in range(NB_ACTION)])
         context_data = np.array(cdf[context_column])
         action_data = np.array(cdf[action_columns])
-
+      
         population = cdf['Population'].iloc[-1]
         context_samples = []
         action_samples = []
-
+        
         initial_total_cases = np.array(cdf['ConfirmedCases'])[-1]
         prev_new_cases = np.array(cdf['NewCases'])[-window_size:]
 
@@ -346,7 +314,8 @@ def create_country_samples(df, weights_df, geos, start_date, window_size) -> dic
             }
             input_tensor = get_input_tensor(initial_conditions)
             country_samples[g] = input_tensor
-    return country_samples
+            country_names[g] = [cdf['CountryName'].iloc[0], cdf['RegionName'].iloc[0]]
+    return country_samples, country_names
 
 # Function for performing roll outs into the future
 

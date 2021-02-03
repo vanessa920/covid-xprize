@@ -13,39 +13,32 @@ NPI_COLUMNS = ['C1_School closing',
                'H3_Contact tracing',
                'H6_Facial Coverings']
 
-def write_solutions(prescriptions, country_name, region_name, start_date, output_csv):
 
-#     df = pd.DataFrame(columns=["CountryName", "RegionName", "Date", "PrescriptionIndex"] + NPI_COLUMNS)
-#     df.to_csv(output_csv, index=False)
-    # cast to int
+def write_solutions(prescriptions, country_name, region_name, start_date, num_days, output_csv):
+ 
     for i in range(len(prescriptions)):
-
-        df = pd.DataFrame(prescriptions[i], columns=NPI_COLUMNS)
+        prescription_np = prescriptions[i].numpy()
+        df = pd.DataFrame(prescription_np, columns=NPI_COLUMNS)
         df[NPI_COLUMNS] = df[NPI_COLUMNS].astype('int32')
-        df["Date"] = pd.date_range(start_date, periods=len(prescriptions[i]), freq='D')
+        df["Date"] = pd.date_range(start_date, periods=num_days, freq='D')
         df["CountryName"] = country_name
         df["RegionName"] = region_name
+        df["RegionName"] = df["RegionName"].fillna(value='')
         df["PrescriptionIndex"] = i
-
+        
         df.to_csv(output_csv, mode="a", header=False, index=False)
+    
 
+# def write_solutions(prescriptions, country_name, region_name, start_date, output_csv):
 
-#     def write_solutions(prescriptions, country_name, region_name, start_date, output_csv):
-#     dfs = []
-
-#     #= pd.DataFrame(columns=["CountryName", "RegionName", "Date", "PrescriptionIndex"] + NPI_COLUMNS)
-#     #df.to_csv(output_csv)
-#     # cast to int
 #     for i in range(len(prescriptions)):
-
-#         df_add = pd.DataFrame(prescriptions[i], columns=NPI_COLUMNS)
-
+        
+#         df = pd.DataFrame(prescriptions[i], columns=NPI_COLUMNS)
+#         df[NPI_COLUMNS] = df[NPI_COLUMNS].astype('int32')
 #         df["Date"] = pd.date_range(start_date, periods=len(prescriptions[i]), freq='D')
 #         df["CountryName"] = country_name
 #         df["RegionName"] = region_name
 #         df["PrescriptionIndex"] = i
-
-#         dfs.append(df)
-#     big_df = pd.concat(dfs, axis=0)
-#     big_df.to_csv(output_csv)
+        
+#         df.to_csv(output_csv, mode="a", header=False, index=False)
     

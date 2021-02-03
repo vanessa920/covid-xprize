@@ -25,23 +25,10 @@ class CalcCasesLayer(Layer):
         pct_inf = tf.math.divide(curr_total_cases, pop_size)
 
         term_1 = tf.math.subtract(tf.math.multiply(ratio, tf.math.subtract(1.0, pct_inf)), 1.0)
-
+        
         term_2 = tf.math.multiply(tf.reduce_mean(prev_new_cases), WINDOW_SIZE)
-
+        
         return tf.math.maximum(0.0, tf.math.add(tf.math.multiply(term_1, term_2), prev_new_cases[0]))
-
-# testing a stringency constraint
-# class StringencyConstraintLayer(Layer):
-#     def __init__(self, initial_max, name=None):
-#         super().__init__(name=name)
-#         self.max_stringency = tf.Variable(
-#             initial_value=initial_max,
-#             trainable=False
-#         )
-
-#     # input is just the avg stringency
-#     def call(self, inputs):
-#         return tf.math.maximum(0.0, tf.math.multiply(1000000000000.0, tf.math.subtract(inputs, self.max_stringency)))
 
 
 BATCH_SIZE = 1
@@ -50,32 +37,45 @@ NB_CONTEXT = 1
 NB_ACTION = 12
 WINDOW_SIZE = 7
 
-# todo: try pushing the weights toward integers
+
 class NPIConstraint(Constraint):
-  def __init__(self):
-    self.max_npis = tf.convert_to_tensor([3, 3, 2, 4, 2, 3, 2, 4, 2, 3, 2, 4], dtype='float32')
+    def __init__(self, max_val):
+        self.max_val = max_val
+        
+    def __call__(self, w):
+        clip = tf.clip_by_value(w, clip_value_min=tf.zeros(w.shape),
+                               clip_value_max=self.max_val)
+        return clip
 
-  def __call__(self, w):
-    clip = tf.clip_by_value(w, clip_value_min=tf.zeros(w.shape), clip_value_max=self.max_npis)
-    return clip
+    def get_config(self):
+        return {'max_val': self.max_val}
 
-  def get_config(self):
-    return {'max_npis': self.max_npis}
+class SingleNPI(Layer):
+    def __init__(self, max_val = None, name=None, constraint=None):
+        super().__init__(name=name)
+        npi = tf.keras.initializers.Zeros()(shape=())
+        
+        self.npi = tf.Variable(
+            initial_value=npi,
+            trainable=True,
+            constraint=constraint
+        )
+        
+    def call(self, inputs):
+        return tf.broadcast_to(self.npi, (tf.shape(inputs)[0], 1, 1))
 
 class NPILayer(Layer):
     def __init__(self, name=None, constraint=None):
         super().__init__(name=name)
-
-        npis = tf.keras.initializers.Zeros()(shape=(NB_ACTION))
-
-        self.npis = tf.Variable(
-            initial_value=npis,
-            trainable=True,
-            constraint=constraint
+        self.max_values = tf.Variable(
+            initial_value = tf.reshape([3., 3., 2., 4., 2., 3., 2., 4., 2., 3., 2., 4.],
+                                      shape=(1,1,12)),
+            trainable=False
         )
 
-    def call(self, inputs):
-        return tf.broadcast_to(self.npis, (tf.shape(inputs)[0], 1, NB_ACTION))
+    def call(self, inputs):    
+        return tf.clip_by_value(tf.concat(inputs, axis=2), clip_value_min=tf.zeros((1,1,12)), clip_value_max=self.max_values)
+        #return tf.broadcast_to(npis, (tf.shape(inputs)[0], 1, NB_ACTION))
 
 def construct_model(num_days):
     predict_layer = get_predictor()
@@ -102,21 +102,36 @@ def construct_model(num_days):
         next_action = outer_action_input[:, i:i+1]
         action_layers.append(next_action)
 
-
-    npi_constraint = NPIConstraint()
+    max_npis = tf.convert_to_tensor([3, 3, 2, 4, 2, 3, 2, 4, 2, 3, 2, 4], dtype='float32')
+    
+    npi_constraints = []
+    for i in range(NB_ACTION):
+        npi_constraints.append(NPIConstraint(max_npis[i]))
+    
+    #npi_constraint = NPIConstraint()
+    future_action_single_npis = []
     future_action_layers = []
-    future_stringency_layers = []
+    #future_stringency_layers = []
 
+    npi_concat_layer = NPILayer()
+    
     multiply_layer = Multiply()
     # pass population as a dummy input
     for i in range(num_days):
-        future_action = NPILayer(name=f"future_npis_{i}", constraint=npi_constraint)(population_input)
+        future_action_single_npis.append([])
+        for j in range(NB_ACTION):
+            future_action_single_npis[-1].append(
+                SingleNPI(name=f"day_{i}_npi_{j}", constraint=npi_constraints[j])(population_input)
+            )
+        future_action = npi_concat_layer(future_action_single_npis[-1])
+        
+#       future_action = NPILayer(name=f"future_npis_{i}", constraint=npi_constraint)(population_input)
         future_action_layers.append(future_action)
 
-        weighted_stringencies = multiply_layer([future_action, stringency_costs_input])
-        future_stringency = Lambda(lambda x: tf.reduce_sum(x), name=f"future_stringency_{i}")(weighted_stringencies)
-        future_stringency_layers.append(future_stringency)
-
+        #weighted_stringencies = multiply_layer([future_action, stringency_costs_input])
+        #future_stringency = Lambda(lambda x: tf.reduce_sum(x), name=f"future_stringency_{i}")(weighted_stringencies)
+        #future_stringency_layers.append(future_stringency)
+    #print(future_action_layers)
     # their code uses day-of actions in the prediction
     # could potentially throw away the first action layer
     action_layers.append(future_action_layers[0])
@@ -127,7 +142,7 @@ def construct_model(num_days):
     for i in range(num_days):
         context_grp = concat_layer(context_layers[-NB_LOOKBACK_DAYS:])
         action_grp = concat_layer(action_layers[-NB_LOOKBACK_DAYS:])
-
+        # might want to clamp the weights down before predicting
         predict = reshape_prediction_layer(predict_layer([context_grp, action_grp]))
 
         context_layers.append(predict)
@@ -153,6 +168,9 @@ def construct_model(num_days):
 
     total_new_cases = reshape_context_layer(add_layer(prev_new_cases_layers[WINDOW_SIZE:]))
     #total_cases = add_layer([total_new_cases, total_cases_input])
-    avg_stringency = Average()(future_stringency_layers)
+    #if len(future_stringency_layers) > 1:
+        #avg_stringency = Average()(future_stringency_layers)
+    #else:
+        #avg_stringency = future_stringency_layers[0]
 
-    return Model(inputs=[outer_context_input, outer_action_input, population_input, total_cases_input, prev_new_cases_input, stringency_costs_input], outputs=[total_new_cases, avg_stringency])
+    return Model(inputs=[outer_context_input, outer_action_input, population_input, total_cases_input, prev_new_cases_input, stringency_costs_input], outputs=[total_new_cases])
