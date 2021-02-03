@@ -1,0 +1,620 @@
+Running prescriptions generator bootstrap...
++ mode=prescriptions
++ export TZ=:America/Los_Angeles
++ TZ=:America/Los_Angeles
+++ date
++ echo 'Running bootstrap at Wed Feb  3 07:46:24 America 2021'
+Running bootstrap at Wed Feb  3 07:46:24 America 2021
++ repo_name=covid-xprize-robotasks
++ branch=main
++ repo_dir=/home/xprize/covid-xprize-robotasks-main
++ rm -rf /home/xprize/covid-xprize-robotasks-main
++ archive_file=/home/xprize/covid-xprize-robotasks.tar.gz
++ wget --quiet --output-document /home/xprize/covid-xprize-robotasks.tar.gz https://github.com/leaf-ai/covid-xprize-robotasks/archive/main.tar.gz
++ mkdir -p /home/xprize/covid-xprize-robotasks-main
++ tar --overwrite --extract --directory /home/xprize --file /home/xprize/covid-xprize-robotasks.tar.gz
++ rm /home/xprize/covid-xprize-robotasks.tar.gz
++ '[' prescriptions = predictions ']'
++ '[' prescriptions = prescriptions ']'
++ main_script=/home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.sh
++ chmod +x /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.sh
++ /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.sh /home/xprize/covid-xprize-robotasks-main
++ echo 'Running main script...'
+Running main script...
++ repo_dir=/home/xprize/covid-xprize-robotasks-main
++ prescriptions_file=/home/xprize/covid-xprize-robotasks-main/tasks/prescribe_tasks.csv
++ generate_prescriptions_wrapper=/home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.py
++ prescription_module=/home/xprize/work/prescribe.py
++ validation_module=/home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
++ pwd
+/home/xprize
++ command -v python
+/opt/conda/bin/python
++ command -v pip
+/opt/conda/bin/pip
++ python --version
+Python 3.7.3
++ pip --version
+pip 20.3.3 from /opt/conda/lib/python3.7/site-packages/pip (python 3.7)
++ set +o errexit
++ timeout_script=/home/xprize/covid-xprize-robotasks-main/judging/scripts/timeout_killer.sh
++ chmod +x /home/xprize/covid-xprize-robotasks-main/judging/scripts/timeout_killer.sh
++ flock --nonblock /tmp/robojudge.lock python /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.py --requested-prescriptions-file /home/xprize/covid-xprize-robotasks-main/tasks/prescribe_tasks.csv --prescription-module /home/xprize/work/prescribe.py --validation-module /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
++ /home/xprize/covid-xprize-robotasks-main/judging/scripts/timeout_killer.sh
+/home/xprize/covid-xprize-robotasks-main/judging/scripts/timeout_killer.sh: line 22: $1: unbound variable
+2021-02-03 07:46:30 robojudge            INFO     Generating prescriptions from file /home/xprize/covid-xprize-robotasks-main/tasks/prescribe_tasks.csv
+2021-02-03 07:46:30 robojudge            INFO     Running prescribe module /home/xprize/work/prescribe.py
+2021-02-03 07:46:30 robojudge            INFO     Start date: 2021-02-15
+2021-02-03 07:46:30 robojudge            INFO     End date: 2021-05-15
+2021-02-03 07:46:30 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/uk_future_test_ips.csv
+2021-02-03 07:46:30 robojudge            INFO     Cost file: ~/covid-xprize-robotasks-main/ip_costs/fixed_equal_costs.csv
+2021-02-03 07:46:30 robojudge            INFO     Output file: ~/work/prescriptions/uk_future_test_task.csv
+2021-02-03 07:46:31.472080: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2021-02-03 07:46:31.480112: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2021-02-03 07:46:33.203752: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-02-03 07:46:33.215827: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2021-02-03 07:46:33.236220: W tensorflow/stream_executor/cuda/cuda_driver.cc:326] failed call to cuInit: UNKNOWN ERROR (303)
+2021-02-03 07:46:33.236276: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (wk-caas-a11666a7a46a4d0e84c3a5a63ae1cdb5-16871ed1712258eebecd22): /proc/driver/nvidia/version does not exist
+2021-02-03 07:46:33.236712: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX512F
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-02-03 07:46:33.237624: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-02-03 07:47:25.747744: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-02-03 07:47:25.748162: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2095074999 Hz
+Generating prescriptions from 2021-02-15 to 2021-05-15...
+prescribing for United Kingdom
+tracing gradient
+tracing update
+300.484845161438 seconds to prescribe
+prescribing for United Kingdom / England
+49.18401646614075 seconds to prescribe
+prescribing for United Kingdom / Northern Ireland
+45.32514500617981 seconds to prescribe
+prescribing for United Kingdom / Scotland
+57.46507000923157 seconds to prescribe
+prescribing for United Kingdom / Wales
+48.55387806892395 seconds to prescribe
+Done!
+2021-02-03 07:56:03 robojudge            INFO     Running validation module /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
+2021-02-03 07:56:03 robojudge            INFO     Start date: 2021-02-15
+2021-02-03 07:56:03 robojudge            INFO     End date: 2021-05-15
+2021-02-03 07:56:03 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/uk_future_test_ips.csv
+2021-02-03 07:56:03 robojudge            INFO     Output file: ~/work/prescriptions/uk_future_test_task.csv
+2021-02-03 07:56:03 prescriptor_validation INFO     Validating submission file ~/work/prescriptions/uk_future_test_task.csv start date 2021-02-15 end date 2021-05-15 intervention plan ~/covid-xprize-robotasks-main/ips/prescriptions/uk_future_test_ips.csv
+2021-02-03 07:56:03 numexpr.utils        INFO     NumExpr defaulting to 4 threads.
+2021-02-03 07:56:03 prescriptor_validation INFO     ~/work/prescriptions/uk_future_test_task.csv submission passes validation
+2021-02-03 07:56:03 prescriptor_validation INFO     Done!
+2021-02-03 07:56:03 robojudge            INFO     Running prescribe module /home/xprize/work/prescribe.py
+2021-02-03 07:56:03 robojudge            INFO     Start date: 2021-01-01
+2021-02-03 07:56:03 robojudge            INFO     End date: 2021-03-31
+2021-02-03 07:56:03 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/all_2020_ips.csv
+2021-02-03 07:56:03 robojudge            INFO     Cost file: ~/covid-xprize-robotasks-main/ip_costs/uniform_random_costs.csv
+2021-02-03 07:56:03 robojudge            INFO     Output file: ~/work/prescriptions/all_2021q1_test_task.csv
+2021-02-03 07:56:04.499371: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2021-02-03 07:56:04.499391: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2021-02-03 07:56:06.226237: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-02-03 07:56:06.226505: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2021-02-03 07:56:06.226528: W tensorflow/stream_executor/cuda/cuda_driver.cc:326] failed call to cuInit: UNKNOWN ERROR (303)
+2021-02-03 07:56:06.226566: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (wk-caas-a11666a7a46a4d0e84c3a5a63ae1cdb5-16871ed1712258eebecd22): /proc/driver/nvidia/version does not exist
+2021-02-03 07:56:06.226980: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX512F
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-02-03 07:56:06.228002: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-02-03 07:59:19.121994: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-02-03 07:59:26.706362: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2095074999 Hz
+Generating prescriptions from 2021-01-01 to 2021-03-31...
+prescribing for Aruba
+tracing gradient
+tracing update
+325.63604855537415 seconds to prescribe
+prescribing for Afghanistan
+61.10345768928528 seconds to prescribe
+prescribing for Angola
+51.341734886169434 seconds to prescribe
+prescribing for Albania
+77.8681230545044 seconds to prescribe
+prescribing for Andorra
+47.59083390235901 seconds to prescribe
+prescribing for United Arab Emirates
+77.89199614524841 seconds to prescribe
+prescribing for Argentina
+74.22210550308228 seconds to prescribe
+prescribing for Australia
+59.59198617935181 seconds to prescribe
+prescribing for Austria
+65.95782589912415 seconds to prescribe
+prescribing for Azerbaijan
+74.38695764541626 seconds to prescribe
+prescribing for Burundi
+47.72789907455444 seconds to prescribe
+prescribing for Belgium
+55.60952877998352 seconds to prescribe
+prescribing for Benin
+37.799721479415894 seconds to prescribe
+prescribing for Burkina Faso
+62.693957567214966 seconds to prescribe
+prescribing for Bangladesh
+59.97048783302307 seconds to prescribe
+prescribing for Bulgaria
+81.1244649887085 seconds to prescribe
+prescribing for Bahrain
+66.08186841011047 seconds to prescribe
+prescribing for Bahamas
+71.02556252479553 seconds to prescribe
+prescribing for Bosnia and Herzegovina
+66.35331273078918 seconds to prescribe
+prescribing for Belarus
+78.1699230670929 seconds to prescribe
+prescribing for Belize
+74.01099348068237 seconds to prescribe
+prescribing for Bermuda
+81.01880478858948 seconds to prescribe
+prescribing for Bolivia
+74.56624603271484 seconds to prescribe
+prescribing for Brazil
+65.48561978340149 seconds to prescribe
+prescribing for Barbados
+80.26234340667725 seconds to prescribe
+prescribing for Brunei
+52.828211545944214 seconds to prescribe
+prescribing for Bhutan
+78.40664052963257 seconds to prescribe
+prescribing for Botswana
+75.03785371780396 seconds to prescribe
+prescribing for Central African Republic
+38.15451765060425 seconds to prescribe
+prescribing for Canada
+72.9300308227539 seconds to prescribe
+prescribing for Switzerland
+67.35273718833923 seconds to prescribe
+prescribing for Chile
+72.66027307510376 seconds to prescribe
+prescribing for China
+35.03097224235535 seconds to prescribe
+prescribing for Cote d'Ivoire
+68.35790085792542 seconds to prescribe
+prescribing for Cameroon
+18.4504873752594 seconds to prescribe
+prescribing for Democratic Republic of Congo
+57.07533073425293 seconds to prescribe
+prescribing for Congo
+81.00361847877502 seconds to prescribe
+prescribing for Colombia
+75.60251259803772 seconds to prescribe
+prescribing for Comoros
+83.30812048912048 seconds to prescribe
+prescribing for Cape Verde
+73.04859852790833 seconds to prescribe
+prescribing for Costa Rica
+77.05225729942322 seconds to prescribe
+prescribing for Cuba
+74.99833035469055 seconds to prescribe
+prescribing for Cyprus
+77.53514957427979 seconds to prescribe
+prescribing for Czech Republic
+57.3899450302124 seconds to prescribe
+prescribing for Germany
+80.08496713638306 seconds to prescribe
+prescribing for Djibouti
+55.81986689567566 seconds to prescribe
+prescribing for Dominica
+17.51593589782715 seconds to prescribe
+prescribing for Denmark
+64.6349835395813 seconds to prescribe
+prescribing for Dominican Republic
+82.02938556671143 seconds to prescribe
+prescribing for Algeria
+66.24380874633789 seconds to prescribe
+prescribing for Ecuador
+73.70552015304565 seconds to prescribe
+prescribing for Egypt
+74.17614984512329 seconds to prescribe
+prescribing for Eritrea
+74.77100872993469 seconds to prescribe
+prescribing for Spain
+59.38960576057434 seconds to prescribe
+prescribing for Estonia
+66.76494789123535 seconds to prescribe
+prescribing for Ethiopia
+58.48075222969055 seconds to prescribe
+prescribing for Finland
+71.17226839065552 seconds to prescribe
+prescribing for Fiji
+43.94046068191528 seconds to prescribe
+prescribing for France
+60.672629594802856 seconds to prescribe
+prescribing for Faeroe Islands
+73.58172273635864 seconds to prescribe
+prescribing for Gabon
+63.164676904678345 seconds to prescribe
+prescribing for United Kingdom
+60.322511434555054 seconds to prescribe
+prescribing for United Kingdom / England
+61.636972188949585 seconds to prescribe
+prescribing for United Kingdom / Northern Ireland
+54.40895485877991 seconds to prescribe
+prescribing for United Kingdom / Scotland
+67.83322930335999 seconds to prescribe
+prescribing for United Kingdom / Wales
+57.13950157165527 seconds to prescribe
+prescribing for Georgia
+55.79488754272461 seconds to prescribe
+prescribing for Ghana
+63.132705211639404 seconds to prescribe
+prescribing for Guinea
+35.15696859359741 seconds to prescribe
+prescribing for Gambia
+33.564854860305786 seconds to prescribe
+prescribing for Greece
+67.11587977409363 seconds to prescribe
+prescribing for Greenland
+62.34223675727844 seconds to prescribe
+prescribing for Guatemala
+70.54673266410828 seconds to prescribe
+prescribing for Guam
+42.525270223617554 seconds to prescribe
+prescribing for Guyana
+52.905229568481445 seconds to prescribe
+prescribing for Hong Kong
+59.19321393966675 seconds to prescribe
+prescribing for Honduras
+71.54748296737671 seconds to prescribe
+prescribing for Croatia
+60.9001362323761 seconds to prescribe
+prescribing for Haiti
+57.814847230911255 seconds to prescribe
+prescribing for Hungary
+58.50168442726135 seconds to prescribe
+prescribing for Indonesia
+70.51326656341553 seconds to prescribe
+prescribing for India
+68.80475664138794 seconds to prescribe
+prescribing for Ireland
+65.67424321174622 seconds to prescribe
+prescribing for Iran
+76.0214991569519 seconds to prescribe
+prescribing for Iraq
+63.86137294769287 seconds to prescribe
+prescribing for Iceland
+73.59431600570679 seconds to prescribe
+prescribing for Israel
+56.83737897872925 seconds to prescribe
+prescribing for Italy
+67.95082592964172 seconds to prescribe
+prescribing for Jamaica
+67.07877087593079 seconds to prescribe
+prescribing for Jordan
+65.45117092132568 seconds to prescribe
+prescribing for Japan
+72.70319628715515 seconds to prescribe
+prescribing for Kazakhstan
+70.4039044380188 seconds to prescribe
+prescribing for Kenya
+39.91072869300842 seconds to prescribe
+prescribing for Kyrgyz Republic
+69.61539340019226 seconds to prescribe
+prescribing for Cambodia
+72.74791812896729 seconds to prescribe
+prescribing for South Korea
+75.09452843666077 seconds to prescribe
+prescribing for Kuwait
+59.10709238052368 seconds to prescribe
+prescribing for Laos
+16.697715520858765 seconds to prescribe
+prescribing for Lebanon
+66.7284049987793 seconds to prescribe
+prescribing for Liberia
+17.00545597076416 seconds to prescribe
+prescribing for Libya
+74.56524229049683 seconds to prescribe
+prescribing for Sri Lanka
+72.07135224342346 seconds to prescribe
+prescribing for Lesotho
+71.93525338172913 seconds to prescribe
+prescribing for Lithuania
+67.96809792518616 seconds to prescribe
+prescribing for Luxembourg
+45.94796586036682 seconds to prescribe
+prescribing for Latvia
+66.18618178367615 seconds to prescribe
+prescribing for Macao
+16.517131328582764 seconds to prescribe
+prescribing for Morocco
+71.88773322105408 seconds to prescribe
+prescribing for Monaco
+62.39058017730713 seconds to prescribe
+prescribing for Moldova
+55.25340223312378 seconds to prescribe
+prescribing for Madagascar
+48.70825910568237 seconds to prescribe
+prescribing for Mexico
+75.9428927898407 seconds to prescribe
+prescribing for Mali
+66.29831266403198 seconds to prescribe
+prescribing for Myanmar
+69.61969494819641 seconds to prescribe
+prescribing for Mongolia
+66.29783844947815 seconds to prescribe
+prescribing for Mozambique
+54.94287419319153 seconds to prescribe
+prescribing for Mauritania
+73.5636465549469 seconds to prescribe
+prescribing for Mauritius
+16.809448957443237 seconds to prescribe
+prescribing for Malawi
+66.88489818572998 seconds to prescribe
+prescribing for Malaysia
+80.43149542808533 seconds to prescribe
+prescribing for Namibia
+68.33469462394714 seconds to prescribe
+prescribing for Niger
+55.78409671783447 seconds to prescribe
+prescribing for Nigeria
+55.87369966506958 seconds to prescribe
+prescribing for Nicaragua
+49.36205863952637 seconds to prescribe
+prescribing for Netherlands
+60.86984705924988 seconds to prescribe
+prescribing for Norway
+75.04707956314087 seconds to prescribe
+prescribing for Nepal
+63.316678524017334 seconds to prescribe
+prescribing for New Zealand
+48.927704095840454 seconds to prescribe
+prescribing for Oman
+56.55737113952637 seconds to prescribe
+prescribing for Pakistan
+59.963969707489014 seconds to prescribe
+prescribing for Panama
+52.14393424987793 seconds to prescribe
+prescribing for Peru
+67.0582058429718 seconds to prescribe
+prescribing for Philippines
+59.780702114105225 seconds to prescribe
+prescribing for Papua New Guinea
+16.77091336250305 seconds to prescribe
+prescribing for Poland
+70.30867266654968 seconds to prescribe
+prescribing for Puerto Rico
+67.07407999038696 seconds to prescribe
+prescribing for Portugal
+70.35968327522278 seconds to prescribe
+prescribing for Paraguay
+67.2333402633667 seconds to prescribe
+prescribing for Palestine
+69.85895895957947 seconds to prescribe
+prescribing for Qatar
+54.58004331588745 seconds to prescribe
+prescribing for Kosovo
+68.84759640693665 seconds to prescribe
+prescribing for Romania
+65.94663095474243 seconds to prescribe
+prescribing for Russia
+70.99644804000854 seconds to prescribe
+prescribing for Rwanda
+71.53446769714355 seconds to prescribe
+prescribing for Saudi Arabia
+42.834285736083984 seconds to prescribe
+prescribing for Sudan
+16.406365156173706 seconds to prescribe
+prescribing for Senegal
+63.78325796127319 seconds to prescribe
+prescribing for Singapore
+46.699915170669556 seconds to prescribe
+prescribing for Solomon Islands
+16.172967195510864 seconds to prescribe
+prescribing for Sierra Leone
+51.03998374938965 seconds to prescribe
+prescribing for El Salvador
+63.96634292602539 seconds to prescribe
+prescribing for San Marino
+43.71487522125244 seconds to prescribe
+prescribing for Somalia
+33.97903919219971 seconds to prescribe
+prescribing for Serbia
+61.75902819633484 seconds to prescribe
+prescribing for South Sudan
+66.5599102973938 seconds to prescribe
+prescribing for Suriname
+66.591872215271 seconds to prescribe
+prescribing for Slovak Republic
+59.45752549171448 seconds to prescribe
+prescribing for Slovenia
+50.070683002471924 seconds to prescribe
+prescribing for Sweden
+53.85122323036194 seconds to prescribe
+prescribing for Eswatini
+66.68622779846191 seconds to prescribe
+prescribing for Seychelles
+48.983296394348145 seconds to prescribe
+prescribing for Syria
+51.69576358795166 seconds to prescribe
+prescribing for Chad
+43.06016993522644 seconds to prescribe
+prescribing for Togo
+45.08375597000122 seconds to prescribe
+prescribing for Thailand
+66.18219900131226 seconds to prescribe
+prescribing for Tajikistan
+42.092416286468506 seconds to prescribe
+prescribing for Timor-Leste
+42.33778691291809 seconds to prescribe
+prescribing for Trinidad and Tobago
+52.60642886161804 seconds to prescribe
+prescribing for Tunisia
+66.72139978408813 seconds to prescribe
+prescribing for Turkey
+60.79334378242493 seconds to prescribe
+prescribing for Taiwan
+31.892608642578125 seconds to prescribe
+prescribing for Tanzania
+16.1314435005188 seconds to prescribe
+prescribing for Uganda
+54.204652309417725 seconds to prescribe
+prescribing for Ukraine
+66.31053566932678 seconds to prescribe
+prescribing for Uruguay
+63.71194577217102 seconds to prescribe
+prescribing for United States
+50.22332763671875 seconds to prescribe
+prescribing for United States / Alaska
+47.18661069869995 seconds to prescribe
+prescribing for United States / Alabama
+50.74391984939575 seconds to prescribe
+prescribing for United States / Arkansas
+46.60933232307434 seconds to prescribe
+prescribing for United States / Arizona
+47.7061812877655 seconds to prescribe
+prescribing for United States / California
+48.424376010894775 seconds to prescribe
+prescribing for United States / Colorado
+52.758652448654175 seconds to prescribe
+prescribing for United States / Connecticut
+49.10425353050232 seconds to prescribe
+prescribing for United States / Washington DC
+63.75924825668335 seconds to prescribe
+prescribing for United States / Delaware
+51.966044425964355 seconds to prescribe
+prescribing for United States / Florida
+50.83622646331787 seconds to prescribe
+prescribing for United States / Georgia
+55.62846350669861 seconds to prescribe
+prescribing for United States / Hawaii
+63.665212869644165 seconds to prescribe
+prescribing for United States / Iowa
+47.89214825630188 seconds to prescribe
+prescribing for United States / Idaho
+35.97928333282471 seconds to prescribe
+prescribing for United States / Illinois
+43.15946841239929 seconds to prescribe
+prescribing for United States / Indiana
+40.34827733039856 seconds to prescribe
+prescribing for United States / Kansas
+40.751179456710815 seconds to prescribe
+prescribing for United States / Kentucky
+50.419193267822266 seconds to prescribe
+prescribing for United States / Louisiana
+51.086390256881714 seconds to prescribe
+prescribing for United States / Massachusetts
+56.478662967681885 seconds to prescribe
+prescribing for United States / Maryland
+52.656437397003174 seconds to prescribe
+prescribing for United States / Maine
+67.76993012428284 seconds to prescribe
+prescribing for United States / Michigan
+54.079155921936035 seconds to prescribe
+prescribing for United States / Minnesota
+41.86219096183777 seconds to prescribe
+prescribing for United States / Missouri
+47.90007138252258 seconds to prescribe
+prescribing for United States / Mississippi
+53.037004709243774 seconds to prescribe
+prescribing for United States / Montana
+42.60353398323059 seconds to prescribe
+prescribing for United States / North Carolina
+56.018112659454346 seconds to prescribe
+prescribing for United States / North Dakota
+45.80682349205017 seconds to prescribe
+prescribing for United States / Nebraska
+45.58967661857605 seconds to prescribe
+prescribing for United States / New Hampshire
+67.04896450042725 seconds to prescribe
+prescribing for United States / New Jersey
+48.94305419921875 seconds to prescribe
+prescribing for United States / New Mexico
+52.71027970314026 seconds to prescribe
+prescribing for United States / Nevada
+45.299792528152466 seconds to prescribe
+prescribing for United States / New York
+62.51884746551514 seconds to prescribe
+prescribing for United States / Ohio
+51.915109157562256 seconds to prescribe
+prescribing for United States / Oklahoma
+44.242451429367065 seconds to prescribe
+prescribing for United States / Oregon
+62.9415922164917 seconds to prescribe
+prescribing for United States / Pennsylvania
+60.377867698669434 seconds to prescribe
+prescribing for United States / Rhode Island
+43.89800500869751 seconds to prescribe
+prescribing for United States / South Carolina
+56.30803608894348 seconds to prescribe
+prescribing for United States / South Dakota
+43.32291889190674 seconds to prescribe
+prescribing for United States / Tennessee
+45.13917517662048 seconds to prescribe
+prescribing for United States / Texas
+49.91995596885681 seconds to prescribe
+prescribing for United States / Utah
+40.54010725021362 seconds to prescribe
+prescribing for United States / Virginia
+55.25363206863403 seconds to prescribe
+prescribing for United States / Vermont
+65.1711220741272 seconds to prescribe
+prescribing for United States / Washington
+65.68483066558838 seconds to prescribe
+prescribing for United States / Wisconsin
+39.516982078552246 seconds to prescribe
+prescribing for United States / West Virginia
+53.02478528022766 seconds to prescribe
+prescribing for United States / Wyoming
+43.00723719596863 seconds to prescribe
+prescribing for Uzbekistan
+37.39109921455383 seconds to prescribe
+prescribing for Venezuela
+63.573620080947876 seconds to prescribe
+prescribing for Vietnam
+30.37506866455078 seconds to prescribe
+prescribing for Vanuatu
+15.936753988265991 seconds to prescribe
+prescribing for Yemen
+31.50177264213562 seconds to prescribe
+prescribing for South Africa
+62.79258918762207 seconds to prescribe
+prescribing for Zambia
+71.85013508796692 seconds to prescribe
+prescribing for Zimbabwe
+63.04037117958069 seconds to prescribe
+Done!
+2021-02-03 11:49:46 robojudge            INFO     Running validation module /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
+2021-02-03 11:49:46 robojudge            INFO     Start date: 2021-01-01
+2021-02-03 11:49:46 robojudge            INFO     End date: 2021-03-31
+2021-02-03 11:49:46 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/all_2020_ips.csv
+2021-02-03 11:49:46 robojudge            INFO     Output file: ~/work/prescriptions/all_2021q1_test_task.csv
+2021-02-03 11:49:47 prescriptor_validation INFO     Validating submission file ~/work/prescriptions/all_2021q1_test_task.csv start date 2021-01-01 end date 2021-03-31 intervention plan ~/covid-xprize-robotasks-main/ips/prescriptions/all_2020_ips.csv
+2021-02-03 11:49:48 numexpr.utils        INFO     NumExpr defaulting to 4 threads.
+2021-02-03 11:49:52 prescriptor_validation INFO     ~/work/prescriptions/all_2021q1_test_task.csv submission passes validation
+2021-02-03 11:49:52 prescriptor_validation INFO     Done!
+2021-02-03 11:49:53 robojudge            INFO     Running prescribe module /home/xprize/work/prescribe.py
+2021-02-03 11:49:53 robojudge            INFO     Start date: 2020-02-15
+2021-02-03 11:49:53 robojudge            INFO     End date: 2020-03-15
+2021-02-03 11:49:53 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/china_early_2020_ips.csv
+2021-02-03 11:49:53 robojudge            INFO     Cost file: ~/covid-xprize-robotasks-main/ip_costs/china_custom_costs.csv
+2021-02-03 11:49:53 robojudge            INFO     Output file: ~/work/prescriptions/china_early_2020_test_task.csv
+2021-02-03 11:49:53.936378: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2021-02-03 11:49:53.942415: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2021-02-03 11:49:55.679993: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-02-03 11:49:55.685735: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2021-02-03 11:49:55.693588: W tensorflow/stream_executor/cuda/cuda_driver.cc:326] failed call to cuInit: UNKNOWN ERROR (303)
+2021-02-03 11:49:55.698720: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (wk-caas-a11666a7a46a4d0e84c3a5a63ae1cdb5-16871ed1712258eebecd22): /proc/driver/nvidia/version does not exist
+2021-02-03 11:49:55.705332: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX512F
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-02-03 11:49:55.711114: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-02-03 11:50:48.043290: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-02-03 11:50:48.851276: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2095074999 Hz
+Generating prescriptions from 2020-02-15 to 2020-03-15...
+prescribing for China
+tracing gradient
+tracing update
+87.86776089668274 seconds to prescribe
+Done!
+2021-02-03 11:51:45 robojudge            INFO     Running validation module /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
+2021-02-03 11:51:45 robojudge            INFO     Start date: 2020-02-15
+2021-02-03 11:51:45 robojudge            INFO     End date: 2020-03-15
+2021-02-03 11:51:45 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/china_early_2020_ips.csv
+2021-02-03 11:51:45 robojudge            INFO     Output file: ~/work/prescriptions/china_early_2020_test_task.csv
+2021-02-03 11:51:46 prescriptor_validation INFO     Validating submission file ~/work/prescriptions/china_early_2020_test_task.csv start date 2020-02-15 end date 2020-03-15 intervention plan ~/covid-xprize-robotasks-main/ips/prescriptions/china_early_2020_ips.csv
+2021-02-03 11:51:46 numexpr.utils        INFO     NumExpr defaulting to 4 threads.
+2021-02-03 11:51:46 prescriptor_validation INFO     ~/work/prescriptions/china_early_2020_test_task.csv submission passes validation
+2021-02-03 11:51:46 prescriptor_validation INFO     Done!
++ retVal=0
++ '[' 0 -ne 0 ']'
++ set -o errexit
