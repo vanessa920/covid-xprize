@@ -34,4 +34,4 @@ Whatever model we choose will take in the Oxford data AND the engineered feature
     * initial NPIs for each GEOID
     * rate that we should stop enforcing the NPIs over the next 30/60/90 days
 
-![prescription_model.png]('./prescription_model.png')
+![prescription_model.png]('prescription_model.png')
