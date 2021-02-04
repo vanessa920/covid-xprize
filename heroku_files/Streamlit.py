@@ -109,63 +109,32 @@ if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
         # 'H3_Contact tracing', 'H6_Facial Coverings', 'Date', 'CountryName', 'RegionName', 'PrescriptionIndex']
 
         # `npis` is in reverse order of `all_npis` because of the way the matrix ends up when it's transposed
-        npis = ['H6_Facial Coverings', 'H3_Contact tracing', 'H2_Testing policy',
-        'H1_Public information campaigns', 'C8_International travel controls',
-        'C7_Restrictions on internal movement', 'C6_Stay at home requirements',
-        'C5_Close public transport', 'C4_Restrictions on gatherings', 'C3_Cancel public events',
-        'C2_Workplace closing', 'C1_School closing']
 
-        first_date = datetime.datetime.today()
+        # npis = ['H6_Facial Coverings', 'H3_Contact tracing', 'H2_Testing policy',
+        # 'H1_Public information campaigns', 'C8_International travel controls',
+        # 'C7_Restrictions on internal movement', 'C6_Stay at home requirements',
+        # 'C5_Close public transport', 'C4_Restrictions on gatherings', 'C3_Cancel public events',
+        # 'C2_Workplace closing', 'C1_School closing']
+
+        first_date = datetime.datetime.today() - datetime.timedelta(days=1)
         last_date = pd.to_datetime(prescribe_df['Date'].values[-1])
+        dates = [first_date + datetime.timedelta(days=x) for x in range((last_date-first_date).days + 2)] #adding the extra day for setting the color scale to 0-4
+
         prescribe_df = np.transpose(np.array(prescribe_df.drop(axis=1, columns=['Date', 'CountryName', 'RegionName', 'PrescriptionIndex'])))
-
-        dates = [first_date + datetime.timedelta(days=x) for x in range((last_date-first_date).days + 1)]
-        fig = go.Figure(data=go.Heatmap(
-                z=prescribe_df,
-                x=dates,
-                y=npis,
-                ygap=5,
-		#colorscale='Viridis')
-                colorscale=[#this isn't working properly and scales continuously if not all npi values are present (i.e. 4 is missing)
-                        [0,"white"],
-                        [0.2,"white"],
-                        [0.2,"blue"],
-                        [0.4,"blue"],
-                        [0.4,'green'],#can also use rgb(0,255,0)
-                        [0.6,'green'],
-                        [0.6,"yellow"],
-                        [0.8,"yellow"],
-                        [0.8,"red"],
-                        [1,"red"]
-                ]
-        ))
-        fig.update_layout(
-            title='Recommended Intervention Plan',
-            xaxis_nticks=len(dates),
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig)
-
-## the ticks need to be updated so they're less frequent, or maybe even just the dates on the top with the month below for each group? there's a way to do it pretty easily in plotly
-
         prescribe_df = np.concatenate(
             (np.transpose(np.array([[0,1,2,3,4,4,4,4,4,4,4,4]])), # this is here to make sure that the color scale actually goes from 0 to 4
             prescribe_df), axis=1)
-        first_date = datetime.datetime.today() - datetime.timedelta(days=1)
-        dates = [first_date + datetime.timedelta(days=x) for x in range((last_date-first_date).days + 2)] #adding the extra day for the initial 
 
         fig2 = go.Figure(data=go.Heatmap(
                 z=prescribe_df,
                 x=dates,
-                #y=npis,
                 ygap=10,
-        #colorscale='Viridis')
                 colorscale=[#this isn't working properly and scales continuously if not all npi values are present (i.e. 4 is missing)
                         [0,"white"],
                         [0.2,"white"],
                         [0.2,"blue"],
                         [0.4,"blue"],
-                        [0.4,'green'],#can also use rgb(0,255,0)
+                        [0.4,'green'],#can also use rgba()
                         [0.6,'green'],
                         [0.6,"yellow"],
                         [0.8,"yellow"],
@@ -188,10 +157,18 @@ if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
         ))
         fig2.update_layout(
             title='Recommended Intervention Plan',
-            xaxis_nticks=len(dates),
+            xaxis_nticks=len(dates)//4,
+            xaxis_tickformat='%d \n %B', # For more time formatting types, see: https://github.com/d3/d3-time-format/blob/master/README.md
+            # ^^ from https://plotly.com/javascript/tick-formatting/
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
+            width=775,
             xaxis_range = [datetime.datetime.today(),last_date])
+        fig2.update_traces(
+            showscale=False
+        )
         st.plotly_chart(fig2)
 
 
+# put in a legend with the actual colors somehow. Maybe an SVG?
+# make the hover text actually useful. definitely hide the x=..., y=... part. Keep z for now until something better can be put in
