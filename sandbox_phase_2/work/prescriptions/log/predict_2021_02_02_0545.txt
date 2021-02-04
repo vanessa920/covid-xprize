@@ -1,0 +1,58 @@
+Running prescriptions generator bootstrap...
++ mode=prescriptions
++ export TZ=:America/Los_Angeles
++ TZ=:America/Los_Angeles
+++ date
++ echo 'Running bootstrap at Tue Feb  2 05:45:58 America 2021'
+Running bootstrap at Tue Feb  2 05:45:58 America 2021
++ repo_name=covid-xprize-robotasks
++ branch=main
++ repo_dir=/home/xprize/covid-xprize-robotasks-main
++ rm -rf /home/xprize/covid-xprize-robotasks-main
++ archive_file=/home/xprize/covid-xprize-robotasks.tar.gz
++ wget --quiet --output-document /home/xprize/covid-xprize-robotasks.tar.gz https://github.com/leaf-ai/covid-xprize-robotasks/archive/main.tar.gz
++ mkdir -p /home/xprize/covid-xprize-robotasks-main
++ tar --overwrite --extract --directory /home/xprize --file /home/xprize/covid-xprize-robotasks.tar.gz
++ rm /home/xprize/covid-xprize-robotasks.tar.gz
++ '[' prescriptions = predictions ']'
++ '[' prescriptions = prescriptions ']'
++ main_script=/home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.sh
++ chmod +x /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.sh
++ /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.sh /home/xprize/covid-xprize-robotasks-main
++ echo 'Running main script...'
+Running main script...
++ repo_dir=/home/xprize/covid-xprize-robotasks-main
++ prescriptions_file=/home/xprize/covid-xprize-robotasks-main/tasks/prescribe_tasks.csv
++ generate_prescriptions_wrapper=/home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.py
++ prescription_module=/home/xprize/work/prescribe.py
++ validation_module=/home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
++ pwd
+/home/xprize
++ command -v python
+/opt/conda/bin/python
++ command -v pip
+/opt/conda/bin/pip
++ python --version
+Python 3.7.3
++ pip --version
+pip 20.3.3 from /opt/conda/lib/python3.7/site-packages/pip (python 3.7)
++ set +o errexit
++ flock --nonblock /tmp/robojudge.lock python /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/generate_prescriptions.py --requested-prescriptions-file /home/xprize/covid-xprize-robotasks-main/tasks/prescribe_tasks.csv --prescription-module /home/xprize/work/prescribe.py --validation-module /home/xprize/covid-xprize-robotasks-main/judging/scripts/prescribe/prescriptor_validation.py
+2021-02-02 05:46:04 robojudge            INFO     Generating prescriptions from file /home/xprize/covid-xprize-robotasks-main/tasks/prescribe_tasks.csv
+2021-02-02 05:46:04 robojudge            INFO     Running prescribe module /home/xprize/work/prescribe.py
+2021-02-02 05:46:04 robojudge            INFO     Start date: 2021-02-15
+2021-02-02 05:46:04 robojudge            INFO     End date: 2021-05-15
+2021-02-02 05:46:04 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/uk_future_test_ips.csv
+2021-02-02 05:46:04 robojudge            INFO     Cost file: ~/covid-xprize-robotasks-main/ip_costs/fixed_equal_costs.csv
+2021-02-02 05:46:04 robojudge            INFO     Output file: ~/work/prescriptions/uk_future_test_task.csv
+2021-02-02 05:46:04 robojudge            WARNING  Prescriptions already generated at ~/work/prescriptions/uk_future_test_task.csv. Skipping.
+2021-02-02 05:46:04 robojudge            INFO     Running prescribe module /home/xprize/work/prescribe.py
+2021-02-02 05:46:04 robojudge            INFO     Start date: 2021-01-01
+2021-02-02 05:46:04 robojudge            INFO     End date: 2021-03-31
+2021-02-02 05:46:04 robojudge            INFO     IP file: ~/covid-xprize-robotasks-main/ips/prescriptions/all_2020_ips.csv
+2021-02-02 05:46:04 robojudge            INFO     Cost file: ~/covid-xprize-robotasks-main/ip_costs/uniform_random_costs.csv
+2021-02-02 05:46:04 robojudge            INFO     Output file: ~/work/prescriptions/all_2021q1_test_task.csv
+2021-02-02 05:46:04 robojudge            WARNING  Prescriptions already generated at ~/work/prescriptions/all_2021q1_test_task.csv. Skipping.
++ retVal=0
++ '[' 0 -ne 0 ']'
++ set -o errexit
