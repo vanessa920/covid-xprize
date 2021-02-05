@@ -10,22 +10,13 @@ import datetime
 from PIL import Image
 import pickle
 
-# #preprocessing
-# import spacy
-# import re
-# import string
-
 
 #intro
 # st.sidebar.write("This is an application for predicting COVID cases around the country!")
 # st.sidebar.button("Predict")
 
 from HTML_snippets import Title_html
-
-
 st.markdown(Title_html, unsafe_allow_html=True) #Title rendering
-
-#Source: https://www.analyticsvidhya.com/blog/2020/10/create-interactive-dashboards-with-streamlit-and-python/
 
 st.markdown("The dashboard will visualize the Covid-19 cases worldwide")
 st.markdown("Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus. Most people infected with the COVID-19 virus will experience mild to moderate respiratory illness and recover without requiring special treatment. This app gives you the real-time predicted daily new cases of COVID-19")
@@ -52,27 +43,6 @@ select = st.sidebar.selectbox('Select a Country',df['CountryName'].unique())
 #get the country selected in the selectbox
 country_data = df[df['CountryName'] == select]
 
-# select_status = st.sidebar.radio("Covid-19 patient's status", ('Confirmed',
-# 'Active', 'Recovered', 'Deceased'))
-
-# def get_total_dataframe(dataset):
-#     total_dataframe = pd.DataFrame({
-#     'Status':['Confirmed', 'Recovered', 'Deaths','Active'],
-#     'Number of cases':(dataset.iloc[0]['confirmed'],
-#     dataset.iloc[0]['recovered'], 
-#     dataset.iloc[0]['deaths'],dataset.iloc[0]['active'])})
-#     return total_dataframe
-
-# def get_total_dataframe(dataset):
-#     total_dataframe = pd.DataFrame({
-#     'Date':['Predicted Daily New Cases'],
-#     # 'Date':(dataset.iloc[0]['Date']),
-#     'Number of cases':(dataset.iloc[0]['PredictedDailyNewCases'])
-#     })
-#     return total_dataframe
-
-# country_total = get_total_dataframe(country_data)
-
 if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
     st.markdown("## **Country level analysis**")
     if not st.checkbox('Hide Graph', False, key=1):
@@ -91,7 +61,6 @@ if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
             xaxis_nticks=len(list(country_data['Date'])),
             yaxis_range = [0,max(list(country_data['PredictedDailyNewCases']))]
         )
-#         country_total_graph.update_xaxes(tickformat="%b %d %Y", nticks=len(list(country_data['Date'])))
         country_total_graph.update_yaxes(tick0 = 0)
         st.plotly_chart(country_total_graph)
         #st.write(country_data)
@@ -109,63 +78,32 @@ if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
         # 'H3_Contact tracing', 'H6_Facial Coverings', 'Date', 'CountryName', 'RegionName', 'PrescriptionIndex']
 
         # `npis` is in reverse order of `all_npis` because of the way the matrix ends up when it's transposed
-        npis = ['H6_Facial Coverings', 'H3_Contact tracing', 'H2_Testing policy',
-        'H1_Public information campaigns', 'C8_International travel controls',
-        'C7_Restrictions on internal movement', 'C6_Stay at home requirements',
-        'C5_Close public transport', 'C4_Restrictions on gatherings', 'C3_Cancel public events',
-        'C2_Workplace closing', 'C1_School closing']
 
-        first_date = datetime.datetime.today()
+        # npis = ['H6_Facial Coverings', 'H3_Contact tracing', 'H2_Testing policy',
+        # 'H1_Public information campaigns', 'C8_International travel controls',
+        # 'C7_Restrictions on internal movement', 'C6_Stay at home requirements',
+        # 'C5_Close public transport', 'C4_Restrictions on gatherings', 'C3_Cancel public events',
+        # 'C2_Workplace closing', 'C1_School closing']
+
+        first_date = datetime.datetime.today() - datetime.timedelta(days=1)
         last_date = pd.to_datetime(prescribe_df['Date'].values[-1])
+        dates = [first_date + datetime.timedelta(days=x) for x in range((last_date-first_date).days + 2)] #adding the extra day for setting the color scale to 0-4
+
         prescribe_df = np.transpose(np.array(prescribe_df.drop(axis=1, columns=['Date', 'CountryName', 'RegionName', 'PrescriptionIndex'])))
-
-        dates = [first_date + datetime.timedelta(days=x) for x in range((last_date-first_date).days + 1)]
-        fig = go.Figure(data=go.Heatmap(
-                z=prescribe_df,
-                x=dates,
-                y=npis,
-                ygap=5,
-		#colorscale='Viridis')
-                colorscale=[#this isn't working properly and scales continuously if not all npi values are present (i.e. 4 is missing)
-                        [0,"white"],
-                        [0.2,"white"],
-                        [0.2,"blue"],
-                        [0.4,"blue"],
-                        [0.4,'green'],#can also use rgb(0,255,0)
-                        [0.6,'green'],
-                        [0.6,"yellow"],
-                        [0.8,"yellow"],
-                        [0.8,"red"],
-                        [1,"red"]
-                ]
-        ))
-        fig.update_layout(
-            title='Recommended Intervention Plan',
-            xaxis_nticks=len(dates),
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig)
-
-## the ticks need to be updated so they're less frequent, or maybe even just the dates on the top with the month below for each group? there's a way to do it pretty easily in plotly
-
         prescribe_df = np.concatenate(
             (np.transpose(np.array([[0,1,2,3,4,4,4,4,4,4,4,4]])), # this is here to make sure that the color scale actually goes from 0 to 4
             prescribe_df), axis=1)
-        first_date = datetime.datetime.today() - datetime.timedelta(days=1)
-        dates = [first_date + datetime.timedelta(days=x) for x in range((last_date-first_date).days + 2)] #adding the extra day for the initial 
 
         fig2 = go.Figure(data=go.Heatmap(
                 z=prescribe_df,
                 x=dates,
-                #y=npis,
                 ygap=10,
-        #colorscale='Viridis')
                 colorscale=[#this isn't working properly and scales continuously if not all npi values are present (i.e. 4 is missing)
                         [0,"white"],
                         [0.2,"white"],
                         [0.2,"blue"],
                         [0.4,"blue"],
-                        [0.4,'green'],#can also use rgb(0,255,0)
+                        [0.4,'green'],#can also use rgba()
                         [0.6,'green'],
                         [0.6,"yellow"],
                         [0.8,"yellow"],
@@ -184,14 +122,27 @@ if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
                 'Restrict Social Gatherings',
                 'Cancel Public Events',
                 'Close Workplaces',
-                'Close Schools']
+                'Close Schools'],
+                hovertemplate='%{x}<br>' + '%{y}<br>' + 'Restriction Level: %{z}'#see https://plotly.com/python/hover-text-and-formatting/
         ))
         fig2.update_layout(
             title='Recommended Intervention Plan',
-            xaxis_nticks=len(dates),
+            xaxis_nticks=len(dates)//4, # make it more frequent without flipping it 90 degrees
+            xaxis_tickformat='%d \n %B', # For more time formatting types, see: https://github.com/d3/d3-time-format/blob/master/README.md
+            # ^^ from https://plotly.com/javascript/tick-formatting/
+            hovermode="y",
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
+            width=775,
             xaxis_range = [datetime.datetime.today(),last_date])
+        fig2.update_traces(
+            showscale=False
+        )
         st.plotly_chart(fig2)
+
+
+# put in a legend with the actual colors somehow. Maybe an SVG?
+# make the hover text actually useful. definitely hide the x=..., y=... part. Keep z for now until something better can be put in
+# put in plain english explanations of what the NPIs actually mean and a link to the official explanations.
 
 
