@@ -40,7 +40,7 @@ st.markdown(Body_html, unsafe_allow_html=True) #Body rendering
 
 # st.markdown("The dashboard will visualize the Covid-19 cases worldwide")
 st.markdown("Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus. Most people infected with the COVID-19 virus will experience mild to moderate respiratory illness and recover without requiring special treatment. This app gives you the real-time predicted daily new cases of COVID-19")
-st.sidebar.title("Select a Country and NPI stringency level")
+st.sidebar.markdown("### **Select a Country and NPI stringency level**")
 # st.sidebar.markdown("Select the Charts/Plots accordingly:")
 
 # DATA_URL=('E:\Data science Projects\NIELIT project\covid_19_world.csv')
@@ -58,7 +58,8 @@ df=load_data()
 #     st.write(df)
 
 # st.sidebar.checkbox("Show Analysis by Country", True, key=1)
-select = st.sidebar.selectbox('Country',df['CountryName'].unique())
+st.sidebar.markdown("#### Country")
+select = st.sidebar.selectbox('',df['CountryName'].unique())
 
 #get the country selected in the selectbox
 country_data = df[df['CountryName'] == select]
@@ -66,7 +67,7 @@ country_data = df[df['CountryName'] == select]
 #Removed checkbox
 # if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
 # st.markdown("## **Country level analysis**")
-st.markdown(f"## **Overall Predicted Daily New Cases in {select}**")
+st.markdown(f"### **Overall Predicted Daily New Cases in {select}**")
 
 #Removed checkbox
 # if not st.checkbox('Hide Graph', False, key=1):
@@ -89,8 +90,10 @@ country_total_graph.update_yaxes(tick0 = 0)
 st.plotly_chart(country_total_graph)
 #st.write(country_data)
 
-stringency = st.sidebar.slider('NPIs', 0, 9)
-prescribe_df = pd.read_csv("heroku_files/all_2021q1_test_task.csv")
+st.sidebar.markdown("#### NPI")
+stringency = st.sidebar.slider('', 0, 9)
+# prescribe_df = pd.read_csv("heroku_files/all_2021q1_test_task.csv")
+prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
 prescribe_df = prescribe_df[prescribe_df['CountryName'] == select] #select the country
 prescribe_df = prescribe_df[pd.to_datetime(prescribe_df['Date']) >= datetime.datetime.today()] #select today and future dates
 prescribe_df = prescribe_df[prescribe_df['PrescriptionIndex'] == stringency] #select the relevant prescription index
@@ -161,8 +164,11 @@ fig2 = go.Figure(data=go.Heatmap(
         'Close Schools'],
         hovertemplate='%{x}<br>' + '%{y}<br>' + 'Restriction Level: %{z}'#see https://plotly.com/python/hover-text-and-formatting/
 ))
+
+st.markdown("### **Recommended Intervention**")
+
 fig2.update_layout(
-    title='Recommended Intervention Plan',
+    # title="Recommended Intervention",
     xaxis_nticks=len(dates)//4, # make it more frequent without flipping it 90 degrees
     xaxis_tickformat='%d \n %B', # For more time formatting types, see: https://github.com/d3/d3-time-format/blob/master/README.md
     # ^^ from https://plotly.com/javascript/tick-formatting/
@@ -177,7 +183,7 @@ fig2.update_traces(
 st.plotly_chart(fig2)
 
 Description = """
-### Containment and closure policies
+### **Containment and closure policies**
 
 | Name | Description |
 | --- | --- |
@@ -190,7 +196,7 @@ Description = """
 |Local Travel Restrictions| Record restrictions on internal movement between cities/regions | 
 |International Travel Restrictions| Record restrictions on international travel <br/><br/>Note: this records policy for foreign travellers, not citizens |
 
-### Health system policies
+### **Health system policies**
 
 | Name | Description |
 | --- | --- |
@@ -199,8 +205,14 @@ Description = """
 | Contact Tracing | Record government policy on contact tracing after a positive diagnosis <br/><br/>Note: we are looking for policies that would identify all people potentially exposed to Covid-19; voluntary bluetooth apps are unlikely to achieve this |
 | Mask Mandate | Record policies on the use of facial coverings outside the home <br/> | 
 
+<br>
+
+For more information please visit the [Codebook Documentation](https://github.com/OxCGRT/covid-policy-tracker/blob/master/documentation/codebook.md)
+
 """
 st.markdown(Description, unsafe_allow_html=True) #Body rendering
+
+
 
 # put in a legend with the actual colors somehow. Maybe an SVG?
 # make the hover text actually useful. definitely hide the x=..., y=... part. Keep z for now until something better can be put in
