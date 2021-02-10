@@ -38,15 +38,22 @@ df=load_data()
 #     st.write(df)
 
 # st.sidebar.checkbox("Show Analysis by Country", True, key=1)
-st.sidebar.markdown("#### Please select a Country")
+st.sidebar.markdown("#### Select a Country to Start")
 select = st.sidebar.selectbox('',df['CountryName'].unique())
 
 #get the country selected in the selectbox
 country_data = df[df['CountryName'] == select]
 
-st.sidebar.markdown("#### Please select Intervention Stringency Level")
+st.sidebar.markdown("#### Select Intervention Stringency Level")
 stringency = st.sidebar.slider('', 0, 9)
-prescribe_df = pd.read_csv("heroku_files/all_2021q1_test_task.csv")
+
+st.sidebar.markdown(
+    "This Covid Response Recommendation System is trained and built on Oxford Covid-19 Government Response Tracker (OxCGRT). " 
+    "It is made to help decision-makers from different geographic locations in a consistent way, aiding efforts to fight the pandemic. ")
+
+st.sidebar.markdown("Learn More Details: [Intervention Guide](https://github.com/OxCGRT/covid-policy-tracker/blob/master/documentation/interpretation_guide.md)")
+
+prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
 # prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
 prescribe_df = prescribe_df[prescribe_df['CountryName'] == select] #select the country
 prescribe_df = prescribe_df[pd.to_datetime(prescribe_df['Date']) >= datetime.datetime.today()] #select today and future dates
@@ -182,7 +189,7 @@ Description = """
 
 <br>
 
-For more information please visit the [Codebook Documentation](https://github.com/OxCGRT/covid-policy-tracker/blob/master/documentation/codebook.md)
+For more information, please visit the [Oxford Covid-19 Government Response Tracker](https://github.com/OxCGRT/covid-policy-tracker/blob/master/documentation/codebook.md).
 
 <br> 
 
