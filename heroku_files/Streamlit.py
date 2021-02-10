@@ -18,29 +18,9 @@ import pickle
 from HTML_snippets import Title_html
 st.markdown(Title_html, unsafe_allow_html=True) #Title rendering
 
-Body_html = """
-  <style>
- img{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    #width: 300px;
-    height: auto;
-    #opacity:0.9;
-}
-   body{
-    background-image: url(https://i.stack.imgur.com/HCfU2.png);
-    #https://i.stack.imgur.com/9WYxT.png
-    #opacity: 0.5;
-}
-</style>
-"""
-st.markdown(Body_html, unsafe_allow_html=True) #Body rendering
-
 # st.markdown("The dashboard will visualize the Covid-19 cases worldwide")
-st.markdown("Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus. Most people infected with the COVID-19 virus will experience mild to moderate respiratory illness and recover without requiring special treatment. This app gives you the real-time predicted daily new cases of COVID-19")
-st.sidebar.markdown("### **Select a Country and NPI stringency level**")
+st.markdown("Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus. Most people infected with the COVID-19 virus will experience mild to moderate respiratory illness and recover without requiring special treatment. This app gives you the real-time predicted daily new cases of COVID-19 and intervention recommendations.")
+# st.sidebar.markdown("### **Select a Country and Intervention Stringency Level**")
 # st.sidebar.markdown("Select the Charts/Plots accordingly:")
 
 # DATA_URL=('E:\Data science Projects\NIELIT project\covid_19_world.csv')
@@ -58,42 +38,16 @@ df=load_data()
 #     st.write(df)
 
 # st.sidebar.checkbox("Show Analysis by Country", True, key=1)
-st.sidebar.markdown("#### Country")
+st.sidebar.markdown("#### Please select a Country")
 select = st.sidebar.selectbox('',df['CountryName'].unique())
 
 #get the country selected in the selectbox
 country_data = df[df['CountryName'] == select]
 
-#Removed checkbox
-# if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
-# st.markdown("## **Country level analysis**")
-st.markdown(f"### **Overall Predicted Daily New Cases in {select}**")
-
-#Removed checkbox
-# if not st.checkbox('Hide Graph', False, key=1):
-country_total_graph = px.line(
-    country_data,
-    x='Date',
-    y='PredictedDailyNewCases',
-    labels={
-        'PredictedDailyNewCases':'<b>Number of Cases (per 100k)</b>',
-        'Date':'<b>Date</b>'
-    },)
-    # title=f'<b>Overall Predicted Daily New Cases in {select}</b>')
-    #color='Date')
-country_total_graph.update_layout(
-    xaxis_tickformat="%b %d %Y",
-    xaxis_nticks=len(list(country_data['Date'])),
-    yaxis_range = [0,max(list(country_data['PredictedDailyNewCases']))]
-)
-country_total_graph.update_yaxes(tick0 = 0)
-st.plotly_chart(country_total_graph)
-#st.write(country_data)
-
-st.sidebar.markdown("#### NPI")
+st.sidebar.markdown("#### Please select Intervention Stringency Level")
 stringency = st.sidebar.slider('', 0, 9)
-prescribe_df = pd.read_csv("heroku_files/all_2021q1_test_task.csv")
-# prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
+# prescribe_df = pd.read_csv("heroku_files/all_2021q1_test_task.csv")
+prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
 prescribe_df = prescribe_df[prescribe_df['CountryName'] == select] #select the country
 prescribe_df = prescribe_df[pd.to_datetime(prescribe_df['Date']) >= datetime.datetime.today()] #select today and future dates
 prescribe_df = prescribe_df[prescribe_df['PrescriptionIndex'] == stringency] #select the relevant prescription index
@@ -165,7 +119,7 @@ fig2 = go.Figure(data=go.Heatmap(
         hovertemplate='%{x}<br>' + '%{y}<br>' + 'Restriction Level: %{z}'#see https://plotly.com/python/hover-text-and-formatting/
 ))
 
-st.markdown("### **Recommended Intervention**")
+st.markdown(f"### **Recommended Interventions for {select}**")
 
 fig2.update_layout(
     # title="Recommended Intervention",
@@ -182,8 +136,34 @@ fig2.update_traces(
 )
 st.plotly_chart(fig2)
 
+#Removed checkbox
+# if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
+# st.markdown("## **Country level analysis**")
+st.markdown(f"### **Overall Predicted Daily New Cases in {select}**")
+
+#Removed checkbox
+# if not st.checkbox('Hide Graph', False, key=1):
+country_total_graph = px.line(
+    country_data,
+    x='Date',
+    y='PredictedDailyNewCases',
+    labels={
+        'PredictedDailyNewCases':'<b>Number of Cases (per 100k)</b>',
+        'Date':'<b>Date</b>'
+    },)
+    # title=f'<b>Overall Predicted Daily New Cases in {select}</b>')
+    #color='Date')
+country_total_graph.update_layout(
+    xaxis_tickformat="%b %d %Y",
+    xaxis_nticks=len(list(country_data['Date'])),
+    yaxis_range = [0,max(list(country_data['PredictedDailyNewCases']))]
+)
+country_total_graph.update_yaxes(tick0 = 0)
+st.plotly_chart(country_total_graph)
+#st.write(country_data)
+
 Description = """
-### **Containment and closure policies**
+### **Intervention Descriptions**
 
 | Name | Description |
 | --- | --- |
@@ -195,11 +175,6 @@ Description = """
 |Stay at Home Order| Record orders to "shelter-in-place" and otherwise confine to the home | 
 |Local Travel Restrictions| Record restrictions on internal movement between cities/regions | 
 |International Travel Restrictions| Record restrictions on international travel <br/><br/>Note: this records policy for foreign travellers, not citizens |
-
-### **Health system policies**
-
-| Name | Description |
-| --- | --- |
 | Public Information Campaign | Record presence of public info campaigns | 
 | Testing Policy | Record government policy on who has access to testing <br/><br/>Note: this records policies about testing for current infection (PCR tests) not testing for immunity (antibody test) | 
 | Contact Tracing | Record government policy on contact tracing after a positive diagnosis <br/><br/>Note: we are looking for policies that would identify all people potentially exposed to Covid-19; voluntary bluetooth apps are unlikely to achieve this |
@@ -209,6 +184,9 @@ Description = """
 
 For more information please visit the [Codebook Documentation](https://github.com/OxCGRT/covid-policy-tracker/blob/master/documentation/codebook.md)
 
+<br> 
+
+Provided by Team Metis 2020 [Github](https://github.com/vanessa920/covid-xprize)
 """
 st.markdown(Description, unsafe_allow_html=True) #Body rendering
 
