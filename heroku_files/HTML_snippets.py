@@ -60,6 +60,23 @@ Title_html = """
     </style> 
     
     <div>
-        <h1>Welcome to the COVID Prediction App!</h1>
+        <h1>COVID Response Recommendations</h1>
     </div>
+
+    <style>
+     img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+        #width: 300px;
+        height: auto;
+        #opacity:0.9;
+    }
+       body{
+        background-image: url(https://i.stack.imgur.com/HCfU2.png);
+        #https://i.stack.imgur.com/9WYxT.png
+        #opacity: 0.5;
+    }
+    </style>
     """
