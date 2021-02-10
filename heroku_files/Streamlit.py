@@ -75,7 +75,7 @@ country_total_graph = px.line(
     x='Date',
     y='PredictedDailyNewCases',
     labels={
-        'PredictedDailyNewCases':'<b>Number of Cases (per 100k?)</b>',
+        'PredictedDailyNewCases':'<b>Number of Cases (per 100k)</b>',
         'Date':'<b>Date</b>'
     },)
     # title=f'<b>Overall Predicted Daily New Cases in {select}</b>')
@@ -90,7 +90,7 @@ st.plotly_chart(country_total_graph)
 #st.write(country_data)
 
 stringency = st.sidebar.slider('NPIs', 0, 9)
-prescribe_df = pd.read_csv('all_2021q1_test_task.csv')
+prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
 prescribe_df = prescribe_df[prescribe_df['CountryName'] == select] #select the country
 prescribe_df = prescribe_df[pd.to_datetime(prescribe_df['Date']) >= datetime.datetime.today()] #select today and future dates
 prescribe_df = prescribe_df[prescribe_df['PrescriptionIndex'] == stringency] #select the relevant prescription index
