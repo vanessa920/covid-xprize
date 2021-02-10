@@ -90,7 +90,7 @@ st.plotly_chart(country_total_graph)
 #st.write(country_data)
 
 def load_prescribe_df():
-    data=pd.read_csv("all_2021q1_test_task.csv")
+    data=pd.read_csv("heroku_files/all_2021q1_test_task.csv")
     return data
 
 stringency = st.sidebar.slider('NPIs', 0, 9)
