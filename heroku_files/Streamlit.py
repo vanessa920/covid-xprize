@@ -45,7 +45,7 @@ select = st.sidebar.selectbox('',df['CountryName'].unique())
 country_data = df[df['CountryName'] == select]
 
 st.sidebar.markdown("#### Select Intervention Stringency Level")
-stringency = st.sidebar.slider('', 0, 9)
+stringency = st.sidebar.slider('Maximum Stringency --> Minimum Stringency', 0, 9)
 
 st.sidebar.markdown(
     "This Covid Response Recommendation System is trained and built on Oxford Covid-19 Government Response Tracker (OxCGRT). " 
