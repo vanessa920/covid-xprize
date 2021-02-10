@@ -54,8 +54,8 @@ def load_data():
     return data
 
 df=load_data()
-if st.checkbox('Show Data'):
-    st.write(df)
+# if st.checkbox('Show Data'):
+#     st.write(df)
 
 # st.sidebar.checkbox("Show Analysis by Country", True, key=1)
 select = st.sidebar.selectbox('Country',df['CountryName'].unique())
@@ -89,8 +89,13 @@ country_total_graph.update_yaxes(tick0 = 0)
 st.plotly_chart(country_total_graph)
 #st.write(country_data)
 
+def load_prescribe_df():
+    data=pd.read_csv("all_2021q1_test_task.csv")
+    return data
+
 stringency = st.sidebar.slider('NPIs', 0, 9)
-prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
+# prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
+prescribe_df = load_prescribe_df()
 prescribe_df = prescribe_df[prescribe_df['CountryName'] == select] #select the country
 prescribe_df = prescribe_df[pd.to_datetime(prescribe_df['Date']) >= datetime.datetime.today()] #select today and future dates
 prescribe_df = prescribe_df[prescribe_df['PrescriptionIndex'] == stringency] #select the relevant prescription index
@@ -181,14 +186,24 @@ Description = """
 
 | Name | Description |
 | --- | --- |
-|School closing| Record closings of schools and universities |
-|Workplace closing| Record closings of workplaces | 
-|Cancel public events| Record cancelling public events |  
-|Restrictions on gatherings| Record limits on gatherings | 
-|Close public transport| Record closing of public transport |
-|Stay at home requirements| Record orders to "shelter-in-place" and otherwise confine to the home | 
-|Restrictions on internal movement| Record restrictions on internal movement between cities/regions | 
-|International travel controls| Record restrictions on international travel <br/><br/>Note: this records policy for foreign travellers, not citizens |
+|Close Schools| Record closings of schools and universities |
+|Close Workplaces| Record closings of workplaces | 
+|Cancel Public Events| Record cancelling public events |  
+|Restrict Social gatherings| Record limits on gatherings | 
+|Suspend Public Transportation| Record closing of public transport |
+|Stay at Home Order| Record orders to "shelter-in-place" and otherwise confine to the home | 
+|Local Travel Restrictions| Record restrictions on internal movement between cities/regions | 
+|International Travel Restrictions| Record restrictions on international travel <br/><br/>Note: this records policy for foreign travellers, not citizens |
+
+### Health system policies
+
+| Name | Description |
+| --- | --- |
+| Public Information Campaign | Record presence of public info campaigns | 
+| Testing Policy | Record government policy on who has access to testing <br/><br/>Note: this records policies about testing for current infection (PCR tests) not testing for immunity (antibody test) | 
+| Contact Tracing | Record government policy on contact tracing after a positive diagnosis <br/><br/>Note: we are looking for policies that would identify all people potentially exposed to Covid-19; voluntary bluetooth apps are unlikely to achieve this |
+| Mask Mandate | Record policies on the use of facial coverings outside the home <br/> | 
+
 """
 st.markdown(Description, unsafe_allow_html=True) #Body rendering
 
