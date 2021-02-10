@@ -89,12 +89,8 @@ country_total_graph.update_yaxes(tick0 = 0)
 st.plotly_chart(country_total_graph)
 #st.write(country_data)
 
-def load_prescribe_df():
-    data=pd.read_csv("heroku_files/all_2021q1_test_task.csv")
-    return data
-
 stringency = st.sidebar.slider('NPIs', 0, 9)
-# prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
+prescribe_df = pd.read_csv("heroku_files/all_2021q1_test_task.csv")
 prescribe_df = load_prescribe_df()
 prescribe_df = prescribe_df[prescribe_df['CountryName'] == select] #select the country
 prescribe_df = prescribe_df[pd.to_datetime(prescribe_df['Date']) >= datetime.datetime.today()] #select today and future dates
