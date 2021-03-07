@@ -17,7 +17,7 @@ import pickle
 
 from HTML_snippets import Title_html
 st.markdown(Title_html, unsafe_allow_html=True) #Title rendering
-
+st.markdown('By [Vanessa Hu](https://www.linkedin.com/in/vanessahu/), [Andrew Zhou](https://www.linkedin.com/in/zhouandrewc/), [Ryan Lewis](https://www.linkedin.com/in/rlew631/), [Nick Wilders](https://www.linkedin.com/in/nickwilders/), [Ridwan Alam](https://www.linkedin.com/in/ridwanalam/), [Brian Tam](https://www.linkedin.com/in/brianhtam/), [Ramon Martin](https://www.linkedin.com/in/ramonmartin1/), [Neda Saleem](https://www.linkedin.com/in/nsaleem-math/)')
 # st.markdown("The dashboard will visualize the Covid-19 cases worldwide")
 st.markdown("Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus. Most people infected with the COVID-19 virus will experience mild to moderate respiratory illness and recover without requiring special treatment. This app gives you the real-time predicted daily new cases of COVID-19 and intervention recommendations.")
 # st.sidebar.markdown("### **Select a Country and Intervention Stringency Level**")
@@ -53,7 +53,7 @@ st.sidebar.markdown(
 
 st.sidebar.markdown("Learn More Details: [Intervention Guide](https://github.com/OxCGRT/covid-policy-tracker/blob/master/documentation/interpretation_guide.md)")
 
-prescribe_df = pd.read_csv("heroku_files/all_2021q1_test_task.csv")
+prescribe_df = pd.read_csv("../heroku_files/all_2021q1_test_task.csv")
 # prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
 prescribe_df = prescribe_df[prescribe_df['CountryName'] == select] #select the country
 prescribe_df = prescribe_df[pd.to_datetime(prescribe_df['Date']) >= datetime.datetime.today()] #select today and future dates
