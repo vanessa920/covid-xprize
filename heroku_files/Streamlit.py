@@ -25,7 +25,8 @@ st.markdown("Coronavirus disease (COVID-19) is an infectious disease caused by a
 # @st.cache(persist=True)
 
 df = pd.read_csv("2020-08-01_2020-08-04_predictions_example.csv")
-# df = pd.read_csv("https://raw.githubusercontent.com/OxCGRT/covid-policy-tracker/master/data/OxCGRT_latest.csv")
+# df = pd.read_csv("https://raw.githubusercontent.com/OxCGRT/covid-policy-tracker/master/data/OxCGRT_latest_combined.csv")
+
 
 st.sidebar.markdown("#### Select a Country to Start")
 select = st.sidebar.selectbox('',df['CountryName'].unique())
@@ -42,13 +43,10 @@ st.sidebar.markdown(
 
 st.sidebar.markdown("Learn More Details: [Intervention Guide](https://github.com/OxCGRT/covid-policy-tracker/blob/master/documentation/interpretation_guide.md)")
 
-# prescribe_df = pd.read_csv("./covid-xprize/heroku _files/all_2021q1_test_task.csv")
-# prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
 prescribe_df = pd.read_csv("https://raw.githubusercontent.com/ridwan102/covid-xprize/master/heroku_files/all_2021q1_test_task.csv")
 prescribe_df = prescribe_df[prescribe_df['CountryName'] == select] #select the country
 prescribe_df = prescribe_df[pd.to_datetime(prescribe_df['Date']) >= datetime.datetime.today()] #select today and future dates
 prescribe_df = prescribe_df[prescribe_df['PrescriptionIndex'] == stringency] #select the relevant prescription index
-# st.write(prescribe_df)
 
 # all_npis = ['C1_School closing', 'C2_Workplace closing', 'C3_Cancel public events', 'C4_Restrictions on gatherings',
 # 'C5_Close public transport', 'C6_Stay at home requirements', 'C7_Restrictions on internal movement',
