@@ -18,26 +18,15 @@ import pickle
 from HTML_snippets import Title_html
 st.markdown(Title_html, unsafe_allow_html=True) #Title rendering
 st.markdown('By [Vanessa Hu](https://www.linkedin.com/in/vanessahu/), [Andrew Zhou](https://www.linkedin.com/in/zhouandrewc/), [Ryan Lewis](https://www.linkedin.com/in/rlew631/), [Nick Wilders](https://www.linkedin.com/in/nickwilders/), [Ridwan Alam](https://www.linkedin.com/in/ridwanalam/), [Brian Tam](https://www.linkedin.com/in/brianhtam/), [Ramon Martin](https://www.linkedin.com/in/ramonmartin1/), [Neda Saleem](https://www.linkedin.com/in/nsaleem-math/)')
-# st.markdown("The dashboard will visualize the Covid-19 cases worldwide")
 st.markdown("Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus. Most people infected with the COVID-19 virus will experience mild to moderate respiratory illness and recover without requiring special treatment. This app gives you the real-time predicted daily new cases of COVID-19 and intervention recommendations.")
-# st.sidebar.markdown("### **Select a Country and Intervention Stringency Level**")
-# st.sidebar.markdown("Select the Charts/Plots accordingly:")
 
 # DATA_URL=('E:\Data science Projects\NIELIT project\covid_19_world.csv')
 # For different use case where the data does not change often
 # @st.cache(persist=True)
 
+df = pd.read_csv("2020-08-01_2020-08-04_predictions_example.csv")
+# df = pd.read_csv("https://raw.githubusercontent.com/OxCGRT/covid-policy-tracker/master/data/OxCGRT_latest.csv")
 
-def load_data():
-    data=pd.read_csv("2020-08-01_2020-08-04_predictions_example.csv")
-    # data = pd.read_csv("https://github.com/OxCGRT/covid-policy-tracker/blob/master/data/OxCGRT_latest.csv")
-    return data
-
-df=load_data()
-# if st.checkbox('Show Data'):
-#     st.write(df)
-
-# st.sidebar.checkbox("Show Analysis by Country", True, key=1)
 st.sidebar.markdown("#### Select a Country to Start")
 select = st.sidebar.selectbox('',df['CountryName'].unique())
 
@@ -53,8 +42,8 @@ st.sidebar.markdown(
 
 st.sidebar.markdown("Learn More Details: [Intervention Guide](https://github.com/OxCGRT/covid-policy-tracker/blob/master/documentation/interpretation_guide.md)")
 
-prescribe_df = pd.read_csv("../heroku_files/all_2021q1_test_task.csv")
-# prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
+# prescribe_df = pd.read_csv("../heroku_files/all_2021q1_test_task.csv")
+prescribe_df = pd.read_csv("all_2021q1_test_task.csv")
 prescribe_df = prescribe_df[prescribe_df['CountryName'] == select] #select the country
 prescribe_df = prescribe_df[pd.to_datetime(prescribe_df['Date']) >= datetime.datetime.today()] #select today and future dates
 prescribe_df = prescribe_df[prescribe_df['PrescriptionIndex'] == stringency] #select the relevant prescription index
@@ -86,18 +75,6 @@ fig2 = go.Figure(data=go.Heatmap(
         z=prescribe_df,
         x=dates,
         ygap=10,
-        # colorscale=[#this isn't working properly and scales continuously if not all npi values are present (i.e. 4 is missing)
-        #         [0,"grey"],
-        #         [0.2,"grey"],
-        #         [0.2,"blue"],
-        #         [0.4,"blue"],
-        #         [0.4,'green'],#can also use rgba()
-        #         [0.6,'green'],
-        #         [0.6,"yellow"],
-        #         [0.8,"yellow"],
-        #         [0.8,"red"],
-        #         [1,"red"]
-        # ],
         colorscale=[#this isn't working properly and scales continuously if not all npi values are present (i.e. 4 is missing)
                 [0,"#e6eeff"],
                 [0.2,"#e6eeff"],
@@ -143,13 +120,8 @@ fig2.update_traces(
 )
 st.plotly_chart(fig2)
 
-#Removed checkbox
-# if st.sidebar.checkbox("Show Analysis by Country", True, key=2):
-# st.markdown("## **Country level analysis**")
 st.markdown(f"### **Overall Predicted Daily New Cases in {select}**")
 
-#Removed checkbox
-# if not st.checkbox('Hide Graph', False, key=1):
 country_total_graph = px.line(
     country_data,
     x='Date',
@@ -158,8 +130,6 @@ country_total_graph = px.line(
         'PredictedDailyNewCases':'<b>Number of Cases (per 100k)</b>',
         'Date':'<b>Date</b>'
     },)
-    # title=f'<b>Overall Predicted Daily New Cases in {select}</b>')
-    #color='Date')
 country_total_graph.update_layout(
     xaxis_tickformat="%b %d %Y",
     xaxis_nticks=len(list(country_data['Date'])),
